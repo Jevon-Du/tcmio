@@ -28,8 +28,8 @@ func (this *MainController) ListTCMs() {
 
 	fmt.Println(tars)
 
-	this.responseMsg.SuccessMsg("", data)
-	this.Data["json"] = this.responseMsg
+	//this.responseMsg.SuccessMsg("", data)
+	this.Data["json"] = data
 	this.ServeJSON()
 
 }

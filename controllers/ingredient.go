@@ -27,8 +27,8 @@ func (this *MainController) ListIngredients() {
 	data.RecordsFiltered = total
 	data.Data = tars
 
-	this.responseMsg.SuccessMsg("", data)
-	this.Data["json"] = this.responseMsg
+	//this.responseMsg.SuccessMsg("", data)
+	this.Data["json"] = data
 	this.ServeJSON()
 
 }

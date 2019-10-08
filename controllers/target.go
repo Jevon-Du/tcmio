@@ -3,8 +3,6 @@ package controllers
 import (
 	"fmt"
 	"tcmio/models"
-
-	"github.com/astaxie/beego/orm"
 )
 
 func (this *MainController) ListTargets1() {
@@ -29,33 +27,40 @@ func (this *MainController) ListTargets1() {
 }
 
 func (this *MainController) ListTargets() {
-	var maps []orm.Params
+
 	draw, _ := this.GetInt64("draw")
 	offset, _ := this.GetInt64("start")
 	limit, _ := this.GetInt64("length")
 	fmt.Println(offset)
 	fmt.Println(limit)
 
+	/*var maps []orm.Params
 	o := orm.NewOrm()
 	qs := o.QueryTable(new(models.Target)).RelatedSel()
 	_, err := qs.Limit(limit, offset).Values(&maps, "name", "uniprot_id", "function", "chembl_id", "gene_name", "pdb", "protein_family", "mass", "length", "ec_number", "kegg")
 	//_, err := o.Raw("SELECT name,journal FROM target LEFT JOIN doc ON target.ref_id = doc.id").Values(&tars)
-
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(maps)
+	*/
+	var tar models.Target
+	var tars []models.Target
+	_, err := tar.Query().Limit(limit, offset).All(&tars)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	total, _ := qs.Count()
+	total, _ := tar.Query().Count()
 
 	var data DataList
 	data.Draw = draw
 	data.RecordsTotal = total
 	data.RecordsFiltered = total
-	data.Data = maps
+	data.Data = tars
 
-	fmt.Println(maps)
-	this.responseMsg.SuccessMsg("", data)
-	this.Data["json"] = this.responseMsg
+	//this.responseMsg.SuccessMsg("", data)
+	this.Data["json"] = data
 	this.ServeJSON()
 }
 
