@@ -10,8 +10,8 @@ import (
 func (this *MainController) ListTargets1() {
 	var tars []models.Target
 	var tar models.Target
-	offset, _ := this.GetInt64("offset")
-	limit, _ := this.GetInt64("limit")
+	offset, _ := this.GetInt64("start")
+	limit, _ := this.GetInt64("length")
 	fmt.Println(offset)
 	fmt.Println(limit)
 	_, err := tar.Query().Limit(limit, offset).OrderBy("name").All(&tars, "name", "uniprot_id")
@@ -30,8 +30,9 @@ func (this *MainController) ListTargets1() {
 
 func (this *MainController) ListTargets() {
 	var maps []orm.Params
-	offset, _ := this.GetInt64("offset")
-	limit, _ := this.GetInt64("limit")
+	draw, _ := this.GetInt64("draw")
+	offset, _ := this.GetInt64("start")
+	limit, _ := this.GetInt64("length")
 	fmt.Println(offset)
 	fmt.Println(limit)
 
@@ -43,8 +44,17 @@ func (this *MainController) ListTargets() {
 	if err != nil {
 		fmt.Println(err)
 	}
+
+	total, _ := qs.Count()
+
+	var data DataList
+	data.Draw = draw
+	data.RecordsTotal = total
+	data.RecordsFiltered = total
+	data.Data = maps
+
 	fmt.Println(maps)
-	this.responseMsg.SuccessMsg("", maps)
+	this.responseMsg.SuccessMsg("", data)
 	this.Data["json"] = this.responseMsg
 	this.ServeJSON()
 }

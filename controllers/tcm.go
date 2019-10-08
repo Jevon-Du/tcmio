@@ -8,17 +8,27 @@ import (
 func (this *MainController) ListTCMs() {
 	var tars []models.TCM
 	var tar models.TCM
-	offset, _ := this.GetInt64("offset")
-	limit, _ := this.GetInt64("limit")
+	draw, _ := this.GetInt64("draw")
+	offset, _ := this.GetInt64("start")
+	limit, _ := this.GetInt64("length")
 	fmt.Println(offset)
 	fmt.Println(limit)
 	_, err := tar.Query().Limit(limit, offset).All(&tars)
 	if err != nil {
 		fmt.Println(err)
 	}
+
+	total, _ := tar.Query().Count()
+
+	var data DataList
+	data.Draw = draw
+	data.RecordsTotal = total
+	data.RecordsFiltered = total
+	data.Data = tars
+
 	fmt.Println(tars)
 
-	this.responseMsg.SuccessMsg("", tars)
+	this.responseMsg.SuccessMsg("", data)
 	this.Data["json"] = this.responseMsg
 	this.ServeJSON()
 

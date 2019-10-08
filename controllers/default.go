@@ -11,6 +11,13 @@ type MainController struct {
 	responseMsg util.ResponseMsg
 }
 
+type DataList struct {
+	Draw            int64       `json:"draw"`
+	RecordsTotal    int64       `json:"recordsTotal"`
+	RecordsFiltered int64       `json:"recordsFiltered"`
+	Data            interface{} `json:"data"`
+}
+
 func (c *MainController) Get() {
 	c.Data["Website"] = "beego.me"
 	c.Data["Email"] = "astaxie@gmail.com"

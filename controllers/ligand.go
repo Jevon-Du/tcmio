@@ -10,8 +10,9 @@ import (
 func (this *MainController) ListLigands() {
 	var tars []models.Ligand
 	var tar models.Ligand
-	offset, _ := this.GetInt64("offset")
-	limit, _ := this.GetInt64("limit")
+	draw, _ := this.GetInt64("draw")
+	offset, _ := this.GetInt64("start")
+	limit, _ := this.GetInt64("length")
 	fmt.Println(offset)
 	fmt.Println(limit)
 	_, err := tar.Query().Limit(limit, offset).All(&tars)
@@ -20,7 +21,15 @@ func (this *MainController) ListLigands() {
 	}
 	fmt.Println(tars)
 
-	this.responseMsg.SuccessMsg("", tars)
+	total, _ := tar.Query().Count()
+
+	var data DataList
+	data.Draw = draw
+	data.RecordsTotal = total
+	data.RecordsFiltered = total
+	data.Data = tars
+
+	this.responseMsg.SuccessMsg("", data)
 	this.Data["json"] = this.responseMsg
 	this.ServeJSON()
 
