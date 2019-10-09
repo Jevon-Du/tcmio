@@ -31,6 +31,10 @@ body > .container {
     margin: 20px 0;
 }
 
+.container table {
+    display: none;
+}
+
 .footer > .container {
     padding-right: 15px;
     padding-left: 15px;
@@ -38,4 +42,8 @@ body > .container {
 
 code {
     font-size: 80%;
+}
+
+.dataTables_wrapper {
+    margin-bottom: 80px;
 }

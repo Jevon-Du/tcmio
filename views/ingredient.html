@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--  修改网页关键词及描述 -->
+    <meta name="keywords" content="tcm" />
+    <meta name="description" content="本网页用来进行化合物库的比较分析" />
+    <meta name="revised" content="当前版本：v1.0" />
+
+    <title>TCMIO Target</title>
+    
+    <link rel="shortcut icon" href="static/img/favicon.ico">
+	<!--  bootstrap  -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/css/uikit.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.uikit.min.css">
+
+    <!--  custom-style -->
+    <link href="../static/css/stick-footer.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Start Navigation -->
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">TCMIO</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
+                <ul class="nav navbar-nav">
+                    <li><a href="index">Home</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Browse <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li class="active"><a href_="targets">Target</a></li>
+                            <li><a href_="ligands">Ligand</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li class="dropdown-header">xxx header</li>
+                            <li><a href_="ingredients">Ingredient</a></li>
+                            <li><a href_="tcms">TCM</a></li>
+                            <li><a href_="prescriptions">Prescription</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="structure">Structure</a></li>
+                    <li><a href="moa">MOA</a></li>
+                    <li><a href="help">Help</a></li>
+                </ul>
+                <!-- <ul class="nav navbar-nav navbar-right">
+                    <li><a href="../navbar/">Default</a></li>
+                    <li class="active"><a href="./">Static top <span class="sr-only">(current)</span></a></li>
+                    <li><a href="../navbar-fixed-top/">Fixed top</a></li>
+                </ul> -->
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+    <!-- End Navigation -->
+    
+    <div class="container">
+
+        <table id="Target" class="uk-table uk-table-hover uk-table-striped" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>GeneName</th>
+                    <th>Function</th>
+                    <th>ProteinFamily</th>
+                    <th>UniprotId</th>
+                    <th>ChemblId</th>
+                    <th>EcNumber</th>
+                    <th>Kegg</th>
+                    <th>Pdb</th>
+                    <th>Mass</th>
+                    <th>Length</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <table id="Ingredient" class="uk-table uk-table-hover uk-table-striped" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Synonyms</th>
+                    <th>Mol</th>
+                    <th>Smiles</th>
+                    <th>Inchi</th>
+                    <th>Inchikey</th>
+                    <th>LigandId</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <table id="TCM" class="uk-table uk-table-hover uk-table-striped" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>ChineseName</th>
+                    <th>PinyinName</th>
+                    <th>EnglishName</th>
+                    <th>UsePart</th>
+                    <th>PropertyFlavor</th>
+                    <th>ChannelTropism</th>
+                    <th>Effect</th>
+                    <th>Indication</th>
+                    <th>RefSource</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <table id="Prescription" class="uk-table uk-table-hover uk-table-striped" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>ChineseName</th>
+                    <th>PinyinName</th>
+                    <th>Ingredients</th>
+                    <th>Indication</th>
+                    <th>Effect</th>
+                    <th>RefSource</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted">Copyright © 2019 xxx  All rights reserved.</p>
+        </div>
+    </footer>
+        <!-- End Home -->
+    
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- DataTables -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script>
+        
+    </script>
+    <script type="text/javascript" charset="utf8" src="static/js/getList.js"></script>
+</body>
+</html>
