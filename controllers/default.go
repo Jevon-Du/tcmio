@@ -18,12 +18,6 @@ type DataList struct {
 	Data            interface{} `json:"data"`
 }
 
-func (c *MainController) Get() {
-	c.Data["Website"] = "beego.me"
-	c.Data["Email"] = "astaxie@gmail.com"
-	c.TplName = "index.tpl"
-}
-
 func (this *MainController) Index() {
 	this.TplName = "index.html"
 }
@@ -34,6 +28,26 @@ func (this *MainController) Help() {
 
 func (this *MainController) Browse() {
 	this.TplName = "browse.html"
+}
+
+func (this *MainController) Target() {
+	this.TplName = "target.html"
+}
+
+func (this *MainController) Ligand() {
+	this.TplName = "ligand.html"
+}
+
+func (this *MainController) Ingredient() {
+	this.TplName = "ingredient.html"
+}
+
+func (this *MainController) TCM() {
+	this.TplName = "tcm.html"
+}
+
+func (this *MainController) Prescription() {
+	this.TplName = "prescription.html"
 }
 
 func (this *MainController) Structure() {
