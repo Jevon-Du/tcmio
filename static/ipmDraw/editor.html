@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>ipmDraw</title>
+  <link rel="stylesheet" href="./ipmd.min.css">
+  <script src="./ipmd.all.min.js"></script>
+  <style>
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    overflow: hidden;
+  }
+
+  .ipmd-gray .dialog-template .container {
+    height: 264px;
+    max-height: 264px;
+  }
+
+  .ipmd-gray .dialog-template {
+    height: 404px;
+  }
+
+  .ipmd-gray .dialog-pt {
+    width: 596px;
+    min-width: 596px;
+  }
+
+  .ipmd-gray .dialog-pt .ptcell {
+    margin: 0 2px 3px 0;
+  }
+
+  </style>
+</head>
+
+<body>
+  <div id="view-contianer"></div>
+  <script>
+
+  function IpmDraw() {
+    this.cfg = IPM_CFG
+    // parent.cvsId && (this.cfg.id = parent.cvsId)
+    this.cfg.toolbar[2] = 25
+    this.cfg.width = document.documentElement.clientWidth - this.cfg.toolbar[1] - this.cfg.toolbar[3]
+    this.cfg.height = document.documentElement.clientHeight - this.cfg.toolbar[0] - this.cfg.toolbar[2]
+    this.cfg.content = parent.moleFile || ''
+  }
+  // 原型
+  IpmDraw.prototype = {
+    cvs: undefined,
+    // 初始化
+    init() {
+      this.cvs = new ipmd.cvEditor(this.cfg.id, this.cfg.width, this.cfg.height, this.cfg)
+      return this
+    },
+    // 获取cvs
+    getCvs() {
+      return this.cvs
+    },
+    // 清空
+    empty() {
+      return this.cvs.empty()
+    },
+    // 获取mol格式
+    getMol() {
+      return this.cvs.getMol('all')
+    },
+    // 加载分子
+    loadMol(mol) {
+      var ms = ipmd.parser.readMOL(mol)
+      this.cvs.loadContent(ms.molecules[0])
+      return this
+    },
+    // 刷新canvas
+    refresh() {
+      this.cvs.repaint()
+      return this
+    },
+    // 重新调整大小
+    resize() {
+      var w = document.documentElement.clientWidth
+      var h = document.documentElement.clientHeight + IPM_CFG.toolbar[2] - this.cfg.toolbar[2]
+      this.cvs.resize(w, h, true)
+      return this
+    },
+    // 清空canvas
+    clear() {
+      this.cvs.clear()
+      return this
+    },
+    // 居中分子
+    center() {
+      this.cvs.center()
+      return this
+    }
+  }
+  // 初始化
+  var ipmDraw = new IpmDraw();
+  ipmDraw.init()
+
+  </script>
+</body>
+
+</html>

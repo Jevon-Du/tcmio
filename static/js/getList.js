@@ -1,7 +1,10 @@
 var DIVCOUNT = 0;
 var RECORDS = 5;
+var MOLS=[];
+
 var COL_TYPE = {
     targets: [
+        {"data": "Id"},
         {"data": "Name"},
         {"data": "GeneName"},
         {"data": "Function"},
@@ -70,6 +73,17 @@ $(document).ready( function () {
     // 初始化target表格
     $("#navbar .dropdown-menu .active a").click();
 
+    // 添加mol对象
+    // if (cur_url=='ingredients'){
+    //     for (var i=0; i<RECORDS; i++){
+    //         console.log(i);
+    //         // debugger
+    //         var iframe = document.getElementById('iframe'+i);
+    //         console.log(iframe);
+    //         iframe.contentWindow.ipmDraw.loadMol(MOLS[i]); // 获取分子mol格式
+    //     }
+    // } 
+
     //给按钮绑定点击事件
     // $("#table_id_example_button").click(function () {
     //     var url = 'targets/id/' + '';
@@ -85,7 +99,6 @@ function initialize_table(){
     $('.breadcrumb .active').html(table_type);
 
     var cur_url = $('#navbar .dropdown-menu .active a').attr('href_');
-
     var table = $table.DataTable({
         serverSide: true,
         processing: true,
@@ -95,9 +108,6 @@ function initialize_table(){
             type: 'get',
             // dataSrc: 接受到的服务器数据
             dataSrc: function (msg) {
-                if (msg.state != "success"){
-                    return null;
-                }
                 return data_format(msg, cur_url);
             }
         },
@@ -123,6 +133,7 @@ function initialize_table(){
         },
         stateSave: true
     });
+    
     new $.fn.dataTable.Buttons( table, {
         buttons: [{
                 name: 'pdf',
@@ -181,13 +192,78 @@ function initialize_table(){
         // Toggle the visibility
         column.visible(!column.visible());
     });
+
+    // 页面长度事件的处理
+    $table.on( 'length.dt', function ( e, settings, len ) {
+        console.log( 'New page length: '+len );
+        RECORDS = len;
+        init_chemdoodle(cur_url);
+    });
+
+    // 翻页事件的处理
+    $table.on( 'page.dt', function () {
+        var info = table.page.info();
+        $('#pageInfo').html( 'Showing page: '+info.page+' of '+info.pages );
+        init_chemdoodle(cur_url);
+    } );
+
+    // 排序事件处理
+    $table.on( 'order.dt', function () {
+        // This will show: "Ordering on column 1 (asc)", for example
+        var order = table.order();
+        $('#orderInfo').html( 'Ordering on column '+order[0][0]+' ('+order[0][1]+')' );
+        init_chemdoodle(cur_url);
+    } );
+
+   init_chemdoodle(cur_url);
+
+    // 
+    // if (cur_url=='ingredients'){
+    //     var scripts = document.querySelectorAll('td script');
+    //     (function IIFE(){
+    //         for (var i=0; i<scripts.length; i++){
+    //             eval(scripts[i].innerHTML);
+    //         }
+    //     })();
+    // }
+
+    // 执行chemdoodle脚本初始化
+    // var interval = setInterval(function() {
+    //     if (cur_url=='ingredients'){
+    //         var scripts = document.querySelectorAll('td script');
+    //         (function IIFE(){
+    //             for (var i=0; i<scripts.length; i++){
+    //                 eval(scripts[i].innerHTML);
+    //             }
+    //         })();
+    //         addMolInfo(MOLS);
+    //     }
+    // }, 300);
+
+    
+    
+    // var interval = setInterval(function() {
+    //     if (cur_url=='ingredients'){
+            
+    //         // for (var i=0; i<RECORDS; i++){
+    //         //     var iframe = document.getElementById('iframe'+i);
+    //         //     if (iframe) {
+    //         //         // clearInterval(interval);
+    //         //         iframe.contentWindow.ipmDraw.loadMol(MOLS[i]); // 获取分子mol格式
+    //         //     }
+    //         // }
+    //         // clearInterval(interval);
+    //     }
+    // }, 300);
+    
 }
 /**************************** Data fromat ****************************/
 
 function data_format(msg, type){
-    var col_name = [];
+    console.log(msg);
+    console.log(type);
     if (type=='targets'){
-        col_name = ['Name', 'GeneName', 'Function', 'ProteinFamily', 'UniprotId', 'ChemblId', 'EcNumber',
+        var col_name = ['Name', 'GeneName', 'Function', 'ProteinFamily', 'UniprotId', 'ChemblId', 'EcNumber',
         'Kegg', 'Pdb', 'Mass', 'Length'];
         msg.data.forEach(function(currentValue, index){
             for (var idx in col_name) {
@@ -195,29 +271,30 @@ function data_format(msg, type){
                 msg.data[index][col_name[idx]] = new_val;
             }
         });
-    } else {
-        if(type=='ingredients'){
-            col_name = ['Id', 'Name', 'Synonyms', 'Mol', 'Smiles', 'Inchi', 'Inchikey', 'LigandId'];
-        } else if(type=='tcms'){
-            col_name = ['Id', 'ChineseName', 'PinyinName', 'EnglishName', 'UsePart', 'PropertyFlavor', 'ChannelTropism',
-            'Effect', 'Indication', 'RefSource'];
-        } else if(type=='prescriptions'){
-            col_name = ['Id', 'ChineseName', 'PinyinName', 'Ingredients', 'Indication', 'Effect', 'RefSource'];
-        }
+    } else if(type=='ingredients'){
+        MOLS.length = 0;
         msg.data.forEach(function(currentValue, index){
-            for (var idx in col_name) {
-                var new_val = link_format(currentValue[col_name[idx]], col_name[idx]);
-                msg.data[index][col_name[idx]] = new_val;
-            }
+            MOLS.push(msg.data[index]['Mol']);
+            // msg.data[index]['Mol'] = ipm_fromat(index);
+            msg.data[index]['Mol'] = chemdoodle_format(index);
         });
-        // msg.data.forEach(function(currentValue){
-        //     var temp_a = [];
-        //     for (var index in col_name) {
-        //         temp_a.push(currentValue[col_name[index]]);
-        //     };
-        //     data_a.push(temp_a);
-        // });
-    }
+    } 
+    // } else {
+    //     if(type=='ingredients'){
+    //         col_name = ['Id', 'Name', 'Synonyms', 'Mol', 'Smiles', 'Inchi', 'Inchikey', 'LigandId'];
+    //     } else if(type=='tcms'){
+    //         col_name = ['Id', 'ChineseName', 'PinyinName', 'EnglishName', 'UsePart', 'PropertyFlavor', 'ChannelTropism',
+    //         'Effect', 'Indication', 'RefSource'];
+    //     } else if(type=='prescriptions'){
+    //         col_name = ['Id', 'ChineseName', 'PinyinName', 'Ingredients', 'Indication', 'Effect', 'RefSource'];
+    //     }
+    //     msg.data.forEach(function(currentValue, index){
+    //         for (var idx in col_name) {
+    //             var new_val = link_format(currentValue[col_name[idx]], col_name[idx]);
+    //             msg.data[index][col_name[idx]] = new_val;
+    //         }
+    //     });
+    // }
     return msg.data;
 };
 
@@ -243,4 +320,90 @@ function link_format(id_val, type){
         return new_el;
     }
     return id_val;
+}
+
+function ipm_fromat(idx){
+    var iframe_el = '<iframe id="iframe'+ idx +'" name="' + idx +'" src="static/ipmDraw/editor.html" frameborder="0" width="300px" height="300px"></iframe>';
+    return iframe_el;
+}
+
+function chemdoodle_format(idx){
+    var var_name = 'sketcher' + idx;
+    var chemdoodle_html = '<canvas id="'+ var_name +'"></canvas>';
+    return chemdoodle_html;
+}
+
+// function chemdoodle_format(idx){
+//     var var_name = 'sketcher' + idx;
+//     var chemdoodle_html = '<script>var '+ var_name +' = new ChemDoodle.TransformCanvas("' + var_name + '", 220, 220, true);</script>';
+//     return chemdoodle_html;
+// }
+
+// function showChemdoodle(){
+//     for (var i = 0; i < 15; i++) {
+//         var ele = "#structure-" + i;
+//         $(ele).show();
+//     }
+// }
+// function hideChemdoodle(cnt){
+//     for (var i = cnt; i < 15; i++) {
+//         var ele = "#structure-" + i;
+//         $(ele).css("display", "none");
+//     }
+// }
+
+function addMolInfo(data) {
+    var molCnt = data.length;
+    structureInitial();
+    // showChemdoodle();
+    // hideChemdoodle(molCnt);
+    var ele = "#structure-";
+    for (var i = 0; i < molCnt; i++) {
+        loadMolecule(i, data[i]);
+
+        // $(ele + i + " .grid-upInfo").html(data[i].MolName);
+        // $(ele + i + " .grid-downInfo").html('Score:' + data[i].Score.toFixed(2));
+        // $(ele + i + " .js-str-molInfoPopup").attr("data-index", i);
+        // $(ele + i + " .tcell-ID").html(data[i].Id);
+        // $(ele + i + " .tcell-Name").html(data[i].MolName);
+        // $(ele + i + " .tcell-Score").html(data[i].Score.toFixed(2));
+        // $(ele + i + " .tcell-MW").html(data[i].MolWeight.toFixed(2));
+        // $(ele + i + " .tcell-ALogP").html(data[i].Alogp.toFixed(2));
+        // $(ele + i + " .tcell-HBD").html(data[i].HBA);
+        // $(ele + i + " .tcell-HBA").html(data[i].HBD);
+        // $(ele + i + " .tcell-RB").html(data[i].RotBonds);
+        // $(ele + i + " .tcell-TPSA").html(data[i].TPSA.toFixed(2));
+
+        // var radarChartEl = "radarChart" + i;
+        // var radadata = [data[i].MolWeight / 1200, (data[i].Alogp + 3) / 15, data[i].HBD / 15, data[i].HBA / 15, data[i].TPSA / 250, data[i].RotBonds / 20];
+        // var dataLabel = [data[i].MolWeight, data[i].Alogp, data[i].HBA, data[i].HBD, data[i].TPSA, data[i].RotBonds];
+        // generateRadar(radadata, dataLabel, radarChartEl);
+    }
+}
+
+function loadMolecule(index, mol) {
+    var tempCanvas = canMap.get(index);
+    var molecule = ChemDoodle.readMOL(mol);
+    ChemDoodle.informatics.removeH(molecule);
+    structureStyle(tempCanvas);
+    tempCanvas.loadMolecule(molecule);
+}
+
+function init_chemdoodle(cur_url){
+    var interval = setInterval(function() {
+        if (cur_url=='ingredients'){
+            var tds = $('#Ingredient tbody tr td canvas');
+            console.log(tds);
+            if (tds) {
+                tds.each(function(index,element){
+                    var myCanvas = new ChemDoodle.ViewerCanvas('sketcher'+index, 200, 200);
+                    myCanvas.emptyMessage = 'No Data Loaded!';
+                    myCanvas.repaint();
+                    var caffeine = ChemDoodle.readMOL(MOLS[index]);
+                    myCanvas.loadMolecule(caffeine);
+                });
+            }
+            clearInterval(interval);
+        }
+    }, 300);
 }
