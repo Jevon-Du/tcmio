@@ -31,7 +31,7 @@ body > .container {
     margin: 20px 0;
 }
 
-.container table {
+.container .uk-table {
     display: none;
 }
 
@@ -45,5 +45,33 @@ code {
 }
 
 .dataTables_wrapper {
-    margin-bottom: 80px;
+    margin-bottom: 70px;
+}
+
+#Ingredient td {
+    word-break:break-all;
+}
+
+#Ligand td{
+    word-break:break-all;
+}
+
+table.info {
+    table-layout: fixed;
+}
+
+table.info tr {
+    font-size: 16px;
+    padding: 20px 0;
+}
+
+table.info th {
+    width: 20%;
+    padding: 10px 0;
+}
+
+table.info td {
+    width: 80%;
+    word-break: break-all;
+    padding: 10px 0;
 }

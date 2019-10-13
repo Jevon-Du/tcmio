@@ -15,16 +15,16 @@
 	<!--  bootstrap  -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <!-- DataTables CSS -->
-    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+    <!-- <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/css/uikit.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.uikit.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.uikit.min.css"> -->
 
     <!--  custom-style -->
-    <link href="static/css/stick-footer.css" rel="stylesheet">
+    <link href="../static/css/stick-footer.css" rel="stylesheet">
 
     <!-- for chemdoodle -->
-    <script src="static/js/ChemDoodleWeb-libs.js"></script>
-    <script src="static/js/ChemDoodleWeb-unpacked.js"></script>
+    <script src="../static/js/ChemDoodleWeb-libs.js"></script>
+    <script src="../static/js/ChemDoodleWeb-unpacked.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -50,22 +50,22 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
                 <ul class="nav navbar-nav">
-                    <li><a href="index">Home</a></li>
+                    <li><a href="/index">Home</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Browse <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li class="active"><a href_="targets">Target</a></li>
-                            <li><a href_="ligands">Ligand</a></li>
+                            <li class="targets"><a href="/browse/targets">Target</a></li>
+                            <li class="ligands"><a href="/browse/ligands">Ligand</a></li>
                             <li role="separator" class="divider"></li>
                             <li class="dropdown-header">xxx header</li>
-                            <li><a href_="ingredients">Ingredient</a></li>
-                            <li><a href_="tcms">TCM</a></li>
-                            <li><a href_="prescriptions">Prescription</a></li>
+                            <li class="ingredients"><a href="/browse/ingredients">Ingredient</a></li>
+                            <li class="tcms"><a href="/browse/tcms">TCM</a></li>
+                            <li class="prescriptions"><a href="/browse/prescriptions">Prescription</a></li>
                         </ul>
                     </li>
-                    <li><a href="structure">Structure</a></li>
-                    <li><a href="moa">MOA</a></li>
-                    <li><a href="help">Help</a></li>
+                    <li><a href="/structure">Structure</a></li>
+                    <li><a href="/moa">MOA</a></li>
+                    <li><a href="/help">Help</a></li>
                 </ul>
                 <!-- <ul class="nav navbar-nav navbar-right">
                     <li><a href="../navbar/">Default</a></li>
@@ -79,77 +79,17 @@
     
     <div class="container">
 
-        <table id="Target" class="uk-table uk-table-hover uk-table-striped" cellspacing="0" width="100%">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>GeneName</th>
-                    <th>Function</th>
-                    <th>ProteinFamily</th>
-                    <th>UniprotId</th>
-                    <th>ChemblId</th>
-                    <th>EcNumber</th>
-                    <th>Kegg</th>
-                    <th>Pdb</th>
-                    <th>Mass</th>
-                    <th>Length</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+        <div class="page-header">
+            <h1 class="item_name"></h1>
+        </div>
+        
+        <div class="table-responsive">
+            <table class="info">
+                <tbody>
+                </tbody>
+            </table>
+        </div>
 
-        <table id="Ingredient" class="uk-table uk-table-hover uk-table-striped" cellspacing="0" width="100%">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Synonyms</th>
-                    <th>Mol</th>
-                    <th>Smiles</th>
-                    <th>Inchi</th>
-                    <th>Inchikey</th>
-                    <th>LigandId</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-
-        <table id="TCM" class="uk-table uk-table-hover uk-table-striped" cellspacing="0" width="100%">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>ChineseName</th>
-                    <th>PinyinName</th>
-                    <th>EnglishName</th>
-                    <th>UsePart</th>
-                    <th>PropertyFlavor</th>
-                    <th>ChannelTropism</th>
-                    <th>Effect</th>
-                    <th>Indication</th>
-                    <th>RefSource</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-
-        <table id="Prescription" class="uk-table uk-table-hover uk-table-striped" cellspacing="0" width="100%">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>ChineseName</th>
-                    <th>PinyinName</th>
-                    <th>Ingredients</th>
-                    <th>Indication</th>
-                    <th>Effect</th>
-                    <th>RefSource</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
     </div>
 
     <footer class="footer">
@@ -157,7 +97,7 @@
             <p class="text-muted">Copyright © 2019 xxx  All rights reserved.</p>
         </div>
     </footer>
-        <!-- End Home -->
+    <!-- End Home -->
     
     <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -165,8 +105,9 @@
     <!-- DataTables -->
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     
-    <script type="text/javascript" charset="utf8" src="static/js/chemdoodleInitial.js"></script>
-    <script type="text/javascript" charset="utf8" src="static/js/getList.js"></script>
+    <script type="text/javascript" charset="utf8" src="../static/js/common.js"></script>
+    <script type="text/javascript" charset="utf8" src="../static/js/chemdoodleInitial.js"></script>
+    <script type="text/javascript" charset="utf8" src="../static/js/detail.js"></script>
     
 </body>
 </html>
