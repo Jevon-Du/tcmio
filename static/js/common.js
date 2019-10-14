@@ -24,6 +24,46 @@ function link_format(id_val, type){
     return id_val;
 }
 
+function canvas_format(idx){
+    var var_name = 'sketcher' + idx;
+    var chemdoodle_html = '<canvas id="'+ var_name +'"></canvas>';
+    return chemdoodle_html;
+}
+
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+
+
+function ipm_fromat(idx){
+    var iframe_el = '<iframe id="iframe'+ idx +'" name="' + idx +'" src="static/ipmDraw/editor.html" frameborder="0" width="300px" height="300px"></iframe>';
+    return iframe_el;
+}
+
+
+function loadMolecule(index, mol) {
+    var tempCanvas = canMap.get(index);
+    var molecule = ChemDoodle.readMOL(mol);
+    ChemDoodle.informatics.removeH(molecule);
+    structureStyle(tempCanvas);
+    tempCanvas.loadMolecule(molecule);
+}
+
+function init_chemdoodle(data_type){
+    var interval = setInterval(function() {
+        if (data_type=='ingredients' || data_type=='ligands'){
+            var tds = $('#'+data_type+ ' tbody tr td canvas');
+            if (tds) {
+                tds.each(function(index,element){
+                    var myCanvas = new ChemDoodle.ViewerCanvas('sketcher'+index, 200, 200);
+                    myCanvas.emptyMessage = 'No Data Loaded!';
+                    myCanvas.repaint();
+                    var mol = ChemDoodle.readMOL(MOLS[index]);
+                    myCanvas.loadMolecule(mol);
+                });
+            }
+            clearInterval(interval);
+        }
+    }, 300);
 }

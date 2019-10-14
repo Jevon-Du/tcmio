@@ -7,7 +7,7 @@ var COL_TYPE = {
         {"data": "Id", "className":"innerLink"},
         {"data": "Name"},
         {"data": "GeneName"},
-        {"data": "Function"},
+        {"data": "Function", "visible": false},
         {"data": "ProteinFamily"},
         {"data": "UniprotId"},
         {"data": "ChemblId"},
@@ -198,61 +198,6 @@ function data_format(msg, type){
     msg.data.forEach(function(currentValue, index){
         msg.data[index]['Id'] = '<a href="/' + type +'/' + currentValue['Id'] + '">' + currentValue['Id'] +'</a>';
     });
-    // } else {
-    //     if(type=='ingredients'){
-    //         col_name = ['Id', 'Name', 'Synonyms', 'Mol', 'Smiles', 'Inchi', 'Inchikey', 'LigandId'];
-    //     } else if(type=='tcms'){
-    //         col_name = ['Id', 'ChineseName', 'PinyinName', 'EnglishName', 'UsePart', 'PropertyFlavor', 'ChannelTropism',
-    //         'Effect', 'Indication', 'RefSource'];
-    //     } else if(type=='prescriptions'){
-    //         col_name = ['Id', 'ChineseName', 'PinyinName', 'Ingredients', 'Indication', 'Effect', 'RefSource'];
-    //     }
-    //     msg.data.forEach(function(currentValue, index){
-    //         for (var idx in col_name) {
-    //             var new_val = link_format(currentValue[col_name[idx]], col_name[idx]);
-    //             msg.data[index][col_name[idx]] = new_val;
-    //         }
-    //     });
-    // }
 
     return msg.data;
 };
-
-
-function ipm_fromat(idx){
-    var iframe_el = '<iframe id="iframe'+ idx +'" name="' + idx +'" src="static/ipmDraw/editor.html" frameborder="0" width="300px" height="300px"></iframe>';
-    return iframe_el;
-}
-
-function canvas_format(idx){
-    var var_name = 'sketcher' + idx;
-    var chemdoodle_html = '<canvas id="'+ var_name +'"></canvas>';
-    return chemdoodle_html;
-}
-
-
-function init_chemdoodle(data_type){
-    var interval = setInterval(function() {
-        if (data_type=='ingredients' || data_type=='ligands'){
-            var tds = $('#'+data_type+ ' tbody tr td canvas');
-            if (tds) {
-                tds.each(function(index,element){
-                    var myCanvas = new ChemDoodle.ViewerCanvas('sketcher'+index, 200, 200);
-                    myCanvas.emptyMessage = 'No Data Loaded!';
-                    myCanvas.repaint();
-                    var caffeine = ChemDoodle.readMOL(MOLS[index]);
-                    myCanvas.loadMolecule(caffeine);
-                });
-            }
-            clearInterval(interval);
-        }
-    }, 300);
-}
-
-function loadMolecule(index, mol) {
-    var tempCanvas = canMap.get(index);
-    var molecule = ChemDoodle.readMOL(mol);
-    ChemDoodle.informatics.removeH(molecule);
-    structureStyle(tempCanvas);
-    tempCanvas.loadMolecule(molecule);
-}

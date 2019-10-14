@@ -48,11 +48,23 @@ code {
     margin-bottom: 70px;
 }
 
-#Ingredient td {
+#targets td {
     word-break:break-all;
 }
 
-#Ligand td{
+#prescriptions td {
+    word-break:break-all;
+}
+
+#ligands td{
+    word-break:break-all;
+}
+
+#tcms td{
+    word-break:break-all;
+}
+
+#ingredients td{
     word-break:break-all;
 }
 
