@@ -62,6 +62,8 @@ func (this *MainController) ListTargets() {
 	//this.responseMsg.SuccessMsg("", data)
 	this.Data["json"] = data
 	this.ServeJSON()
+	this.TplName = "browse.html"
+
 }
 
 func (this *MainController) DetailTarget() {
