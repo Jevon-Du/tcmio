@@ -13,7 +13,7 @@ type Target_ligand struct {
 }
 
 func (m *Target_ligand) TableName() string {
-	return "Target_ligand"
+	return "target_ligand"
 }
 
 func (m *Target_ligand) Insert() error {

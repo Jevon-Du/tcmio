@@ -5,9 +5,11 @@ import (
 )
 
 type TCM_Prescription struct {
-	Id     int64
-	PresId int64
-	TcmId  int64
+	Id       int64
+	PresId   int64
+	TcmId    int64
+	PresName string
+	TcmName  string
 }
 
 func (m *TCM_Prescription) TableName() string {

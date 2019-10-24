@@ -5,11 +5,9 @@ import (
 )
 
 type TCM_Ingredient struct {
-	Id         int64
-	TcmId      int64
-	MoleculeId int64
-	PresName   string
-	TcmName    string
+	Id           int64
+	TcmId        int64
+	IngredientId int64
 }
 
 func (m *TCM_Ingredient) TableName() string {
