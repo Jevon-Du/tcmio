@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--  修改网页关键词及描述 -->
+    <meta name="keywords" content="tcm" />
+    <meta name="description" content="本网页用来进行化合物库的比较分析" />
+    <meta name="revised" content="当前版本：v1.0" />
+
+    <title>TCMIO MOA</title>
+    
+    <link rel="shortcut icon" href="static/img/favicon.ico">
+	<!--  bootstrap  -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/flat-ui.min.css">
+
+    <!--  custom-style -->
+    <!-- <link rel="stylesheet" type="text/css" href='../static/css/select2-flat-theme.min.css'> -->
+    <link rel="stylesheet" type="text/css" href='../static/css/flatui_select2.scss'>
+    
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/json2/20140204/json2.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+
+    <nav class="navbar navbar-inverse navbar-lg navbar-expand-lg" role="navigation" style="border-radius: 0;">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+                        <span class="sr-only">Toggle navigation</span>
+                    </button>
+                    <a class="navbar-brand" href="/index">TCMIO</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse-01">
+                <ul class="nav navbar-nav navbar-center">
+                    <li><a href="/index">Home</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Browse <b class="caret"></b></a>
+                        <span class="dropdown-arrow"></span>
+                        <ul class="dropdown-menu">
+                            <li class="targets"><a href="/browse/targets">Target</a></li>
+                            <li class="ligands"><a href="/browse/ligands">Ligand</a></li>
+                            <!-- <li role="separator" class="divider"></li>
+                            <li class="dropdown-header">xxx header</li> -->
+                            <li class="ingredients"><a href="/browse/ingredients">Ingredient</a></li>
+                            <li class="tcms"><a href="/browse/tcms">TCM</a></li>
+                            <li class="prescriptions"><a href="/browse/prescriptions">Prescription</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="/structure">Structure</a></li>
+                    <li><a href="/moa" class="active">MOA</a></li>
+                    <li><a href="/help">Help</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container">
+        
+        <div class="menuContent">
+            <h2 class="text-center"></h2>
+            <div>
+                
+            </div>
+        </div>
+
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingOne">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Select a name or names
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body">
+                        <div class="btn-group searchTypes">
+                            <button data-toggle="dropdown" class="btn btn-inverse dropdown-toggle" type="button"><span class='searchType'>Herb</span>&nbsp;<span class="caret"></span></button>
+                            <ul role="menu" class="dropdown-menu">
+                                <li><a href="javascript:void(0)" value='tcms'>Herb</a></li>
+                                <li><a href="javascript:void(0)" value='prescriptions'>Prescription</a></li>
+                            </ul>
+                        </div>
+            
+                        <div class="btn-group searchParams">
+                            <button data-toggle="dropdown" class="btn btn-inverse dropdown-toggle" type="button"><span class='searchParam'>EnglishName</span>&nbsp;<span class="caret"></span></button>
+                            <ul role="menu" class="dropdown-menu">
+                                <li class='enName'><a href="javascript:void(0)" value='english'>EnglishName</a></li>
+                                <li class='pyName'><a href="javascript:void(0)" value='pinyin'>PinyinName</a></li>
+                                <li class='cnName'><a href="javascript:void(0)" value='chinese'>ChineseName</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="btn-group searchValue">
+                            <select multiple="multiple" class="tcmsEnglishName form-control multiselect multiselect-info">
+                            </select>
+                            <select multiple="multiple" class="tcmsPinyinName form-control multiselect multiselect-info">
+                            </select>
+                            <select multiple="multiple" class="tcmsChineseName form-control multiselect multiselect-info">
+                            </select>
+                            <select multiple="multiple" class="prescriptionsPinyinName form-control multiselect multiselect-info">
+                            </select>
+                            <select multiple="multiple" class="prescriptionsChineseName form-control multiselect multiselect-info">
+                            </select>
+                        </div>
+
+                        <div class="btn-group search">
+                            <a href="javascript:void(0)" class="btn btn-block btn-primary">Search</a>
+                            <!-- <button class="btn btn-primary">Search</button> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default result">
+                <div class="panel-heading" role="tab" id="headingTwo">
+                <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Mechanism network
+                    </a>
+                </h4>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                <div class="panel-body">
+                    <h1>哦啊哈哈哈哈哈哈哈</h1>
+                    <h1>我是一个NETWORK</h1>
+                </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingThree">
+                    <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Mechanism of action
+                    </a>
+                    </h4>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                    <div class="panel-body">
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted">Copyright © 2019 xxx  All rights reserved.</p>
+        </div>
+    </footer>
+    <!-- End Home -->
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/js/flat-ui.min.js'></script>
+
+    <script type="text/javascript" charset="utf8" src="../static/js/search.js"></script>
+
+    
+</body>
+</html>

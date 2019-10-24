@@ -9,7 +9,7 @@
     <meta name="description" content="本网页用来进行化合物库的比较分析" />
     <meta name="revised" content="当前版本：v1.0" />
 
-    <title>TCMIO</title>
+    <title>TCMIO Help</title>
     
     <link rel="shortcut icon" href="static/img/favicon.ico">
 	<!--  bootstrap  -->
@@ -17,29 +17,28 @@
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/flat-ui.min.css">
 
     <!--  custom-style -->
-    <link href="../static/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/style.css"> 
+	<!-- <link href="static/css/style.css" rel="stylesheet">
+    <link href="static/css/index.css" rel="stylesheet"> -->
 
-    <!-- for chemdoodle -->
-    <script src="../static/js/ChemDoodleWeb-libs.js"></script>
-    <script src="../static/js/ChemDoodleWeb-unpacked.js"></script>
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--  font style  -->
+    <!-- <link href="static/fonts/FontAwesome/font-awesome.css" rel="stylesheet"> -->
+    
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/json2/20140204/json2.min.js"></script>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
 </head>
 <body>
+
     <nav class="navbar navbar-inverse navbar-lg navbar-expand-lg" role="navigation" style="border-radius: 0;">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
-                        <span class="sr-only">Toggle navigation</span>
-                    </button>
-                    <a class="navbar-brand" href="/index">TCMIO</a>
+                    <span class="sr-only">Toggle navigation</span>
+                </button>
+                <a class="navbar-brand" href="/index">TCMIO</a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse-01">
                 <ul class="nav navbar-nav navbar-center">
@@ -59,24 +58,27 @@
                     </li>
                     <li><a href="/structure">Structure</a></li>
                     <li><a href="/moa">MOA</a></li>
-                    <li><a href="/help">Help</a></li>
+                    <li class="active"><a href="/help">Help</a></li>
                 </ul>
             </div>
         </div>
     </nav>
+    <!-- navbar-embossed    -->
 
+    <!-- Start Home -->
     <div class="container">
+        <h3>Address</h3>
+        <address>
+            <strong>Twitter, Inc.</strong><br>
+            795 Folsom Ave, Suite 600<br>
+            San Francisco, CA 94107<br>
+            <abbr title="Phone">P:</abbr> (123) 456-7890
+        </address>
 
-        <div class="page-header">
-            <h3 class="item_name"></h3>
-        </div>
-        
-        <div class="table-responsive" style="margin-bottom: 100px;">
-            <table class="info">
-                <tbody>
-                </tbody>
-            </table>
-        </div>
+        <address>
+            <strong>Full Name</strong><br>
+            <a href="mailto:#">tcmio.xielab.net</a>
+        </address>
 
     </div>
 
@@ -89,10 +91,7 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/js/flat-ui.min.js'></script>
-    
-    <script type="text/javascript" charset="utf8" src="../static/js/common.js"></script>
-    <script type="text/javascript" charset="utf8" src="../static/js/chemdoodleInitial.js"></script>
-    <script type="text/javascript" charset="utf8" src="../static/js/detail.js"></script>
-    
+
+    <script src="../static/js/common.js"></script>
 </body>
 </html>

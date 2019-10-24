@@ -35,7 +35,6 @@ function capitalizeFirstLetter(string) {
 }
 
 
-
 function ipm_fromat(idx){
     var iframe_el = '<iframe id="iframe'+ idx +'" name="' + idx +'" src="static/ipmDraw/editor.html" frameborder="0" width="300px" height="300px"></iframe>';
     return iframe_el;
@@ -51,7 +50,7 @@ function loadMolecule(index, mol) {
 }
 
 function init_chemdoodle(data_type){
-    var interval = setInterval(function() {
+    var interval1 = setInterval(function() {
         if (data_type=='ingredients' || data_type=='ligands'){
             var tds = $('#'+data_type+ ' tbody tr td canvas');
             if (tds) {
@@ -63,7 +62,20 @@ function init_chemdoodle(data_type){
                     myCanvas.loadMolecule(mol);
                 });
             }
-            clearInterval(interval);
+            clearInterval(interval1);
         }
-    }, 300);
+    }, 100);
+
+    var interval2 = setInterval(function() {
+        $('.dataTables_length select').addClass('form-control select select-default');
+        $('.dataTables_length select').select2({
+            dropdownCssClass: 'dropdown-inverse',
+            width: '70px',
+            allowClear: false
+        });
+        if ($('.select-default')) {
+            clearInterval(interval2);
+        }
+    }, 100);
 }
+

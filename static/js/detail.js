@@ -26,17 +26,6 @@ $(document).ready( function () {
 
 function which_type(data_type){
     var name=capitalizeFirstLetter(data_type.slice(0,-1));
-    // if (data_type=='targets'){
-    //     name='Target';
-    // } else if(data_type=='ligands'){
-    //     name='Ligand';
-    // } else if(data_type=='ingredients'){
-    //     name='Ingredient';
-    // } else if(data_type=='tcms'){
-    //     name='TCM';
-    // } else if(data_type=='prescriptions'){
-    //     name='Prescription';
-    // }
     return name;
 }
 
@@ -51,7 +40,6 @@ function render(data, data_type){
         html += '<tr class="item">';
         html += '<th class="item_name">' + key +'</th>';
         if (data[key]){
-            console.log(key);
             if(key=='Mol'){
                 html += '<td class="item_info">' + canvas_format(key) +'</td>';
             } else{

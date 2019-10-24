@@ -4,21 +4,21 @@ var MOLS=[];
 
 var COL_TYPE = {
     targets: [
-        {"data": "Id", "className":"innerLink"},
+        {"data": "Id", "className":"innerLink", "width":"6%"},
         {"data": "Name"},
         {"data": "GeneName"},
         {"data": "Function", "visible": false},
         {"data": "ProteinFamily"},
         {"data": "UniprotId"},
         {"data": "ChemblId"},
-        {"data": "EcNumber"},            
-        {"data": "Kegg"},
-        {"data": "Pdb"},
-        {"data": "Length"},
-        {"data": "Mass"}
+        {"data": "EcNumber"}
+        // {"data": "Kegg"},
+        // {"data": "Pdb"},
+        // {"data": "Length"},
+        // {"data": "Mass"}
     ],
     ligands: [
-        {"data": "Id", "className":"innerLink"},
+        {"data": "Id", "className":"innerLink", "width":"6%"},
         {"data": "Mol", "width":"200px", "className":"chem-viewer"},
         {"data": "Name"},
         {"data": "IngredientId"},
@@ -35,7 +35,7 @@ var COL_TYPE = {
         {"data": "Alogp", "visible": false}     
     ],
     ingredients: [
-        {"data": "Id", "className":"innerLink"},
+        {"data": "Id", "className":"innerLink", "width":"6%"},
         {"data": "Mol", "width":"200px", "className":"chem-viewer"},
         {"data": "Name"},
         // {"data": "Synonyms", "visible": false},
@@ -45,7 +45,7 @@ var COL_TYPE = {
         {"data": "LigandId", "visible": false}
     ],
     tcms: [
-        {"data": "Id", "className":"innerLink"},
+        {"data": "Id", "className":"innerLink", "width":"6%"},
         {"data": "ChineseName"},
         {"data": "PinyinName"},
         {"data": "EnglishName"},
@@ -57,7 +57,7 @@ var COL_TYPE = {
         {"data": "RefSource"}
     ],
     prescriptions: [
-        {"data": "Id", "className":"innerLink"},
+        {"data": "Id", "className":"innerLink", "width":"6%"},
         {"data": "ChineseName"},
         {"data": "PinyinName"},
         {"data": "Ingredients"},
@@ -85,9 +85,7 @@ function initialize_table(data_type){
 
     var table = $table.DataTable({
         serverSide: true,
-        processing: true,
-        fixedHeader: true,
-        autoWidth: false,
+        autoWidth: true,
         ajax: {
             url: '/'+data_type,
             type: 'get',
@@ -98,7 +96,7 @@ function initialize_table(data_type){
         columns: COL_TYPE[data_type],
         dom: '<"toolbar"l><r<t>ip>',
         ordering: true,
-        scrollX: 1120,
+        scrollX: true,
         pagingType:   "full_numbers",
         pageLength: 5, //每页显示的初始记录数量
         lengthChange: true, //允许修改每页的记录数量
@@ -112,33 +110,35 @@ function initialize_table(data_type){
         },
         stateSave: true
     });
-    
+    new $.fn.dataTable.Buttons( table, {
+        buttons: [{
+                name: 'colvis',
+                extend: 'colvis',
+                className: 'btncolvis btn btn-inverse'
+            }]
+    });
+    table.buttons( 0, '.btncolvis' ).containers().appendTo('.toolbar');
+
     new $.fn.dataTable.Buttons( table, {
         buttons: [{
                 name: 'pdf',
                 extend: 'pdf',
                 // text: 'Download as csv'
-                className: 'btnpdf'
+                className: 'btnpdf btn btn-inverse'
             }]
     });
-    table.buttons( 0, '.btnpdf' ).containers().appendTo('.toolbar');
+    table.buttons( 1, '.btnpdf' ).containers().appendTo('.toolbar');
+
     new $.fn.dataTable.Buttons( table, {
         buttons: [{
                 name: 'primary',
                 extend: 'csv',
                 // text: 'Download as csv'
-                className: 'btncsv'
+                className: 'btncsv btn btn-inverse'
             }]
     });
-    table.buttons( 1, '.btncsv' ).containers().appendTo('.toolbar');
-    new $.fn.dataTable.Buttons( table, {
-        buttons: [{
-                name: 'colvis',
-                extend: 'colvis',
-                className: 'btncolvis'
-            }]
-    });
-    table.buttons( 2, '.btncolvis' ).containers().appendTo('.toolbar');
+    table.buttons(2, '.btncsv' ).containers().appendTo('.toolbar');
+    
 
     // show_hide column
     $('a.toggle-vis').on( 'click', function (e) {
@@ -179,8 +179,7 @@ function initialize_table(data_type){
 
 function data_format(msg, type){
     if (type=='targets'){
-        var col_name = ['Name', 'GeneName', 'Function', 'ProteinFamily', 'UniprotId', 'ChemblId', 'EcNumber',
-        'Kegg', 'Pdb', 'Mass', 'Length'];
+        var col_name = ['Name', 'GeneName', 'Function', 'ProteinFamily', 'UniprotId', 'ChemblId', 'EcNumber'];
         msg.data.forEach(function(currentValue, index){
             for (var idx in col_name) {
                 var new_val = link_format(currentValue[col_name[idx]], col_name[idx]);

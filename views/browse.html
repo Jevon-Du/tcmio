@@ -9,49 +9,52 @@
     <meta name="description" content="本网页用来进行化合物库的比较分析" />
     <meta name="revised" content="当前版本：v1.0" />
 
-    <title>TCMIO Target</title>
+    <title>TCMIO Browse</title>
     
     <link rel="shortcut icon" href="static/img/favicon.ico">
 	<!--  bootstrap  -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/flat-ui.min.css">
     <!-- DataTables CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"/>
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/css/uikit.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.uikit.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.0/css/buttons.dataTables.min.css"/>
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.0/css/buttons.dataTables.min.css"/> -->
     
     <!--  custom-style -->
-    <link rel="stylesheet" type="text/css" href="../static/css/stick-footer.css">
-    <!-- <link rel="stylesheet" type="text/css" href="static/css/ipmd.min.css"> -->
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css">
 
     <!-- for chemdoodle -->
     <script src="../static/js/ChemDoodleWeb-libs.js"></script>
     <script src="../static/js/ChemDoodleWeb-unpacked.js"></script>
 
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/json2/20140204/json2.min.js"></script>
+    <![endif]-->
+
 </head>
 <body>
-    <!-- Start Navigation -->
-    <nav class="navbar navbar-default navbar-static-top">
+    <nav class="navbar navbar-inverse navbar-lg navbar-expand-lg" role="navigation" style="border-radius: 0;">
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">TCMIO</a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-01">
+                        <span class="sr-only">Toggle navigation</span>
+                    </button>
+                    <a class="navbar-brand" href="/index">TCMIO</a>
             </div>
-            <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
-                <ul class="nav navbar-nav">
+            <div class="collapse navbar-collapse" id="navbar-collapse-01">
+                <ul class="nav navbar-nav navbar-center">
                     <li><a href="/index">Home</a></li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Browse <span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Browse <b class="caret"></b></a>
+                        <span class="dropdown-arrow"></span>
                         <ul class="dropdown-menu">
                             <li class="targets"><a href="/browse/targets">Target</a></li>
                             <li class="ligands"><a href="/browse/ligands">Ligand</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li class="dropdown-header">xxx header</li>
+                            <!-- <li role="separator" class="divider"></li>
+                            <li class="dropdown-header">xxx header</li> -->
                             <li class="ingredients"><a href="/browse/ingredients">Ingredient</a></li>
                             <li class="tcms"><a href="/browse/tcms">TCM</a></li>
                             <li class="prescriptions"><a href="/browse/prescriptions">Prescription</a></li>
@@ -61,15 +64,9 @@
                     <li><a href="/moa">MOA</a></li>
                     <li><a href="/help">Help</a></li>
                 </ul>
-                <!-- <ul class="nav navbar-nav navbar-right">
-                    <li><a href="../navbar/">Default</a></li>
-                    <li class="active"><a href="./">Static top <span class="sr-only">(current)</span></a></li>
-                    <li><a href="../navbar-fixed-top/">Fixed top</a></li>
-                </ul> -->
-            </div><!--/.nav-collapse -->
+            </div>
         </div>
     </nav>
-    <!-- End Navigation -->
     
     <div class="container">
         <ol class="breadcrumb">
@@ -89,10 +86,10 @@
                     <th>UniprotId</th>
                     <th>ChemblId</th>
                     <th>EcNumber</th>
-                    <th>Kegg</th>
+                    <!-- <th>Kegg</th>
                     <th>Pdb</th>
                     <th>Mass</th>
-                    <th>Length</th>
+                    <th>Length</th> -->
                 </tr>
             </thead>
             <tbody>
@@ -182,8 +179,8 @@
     </footer>
         <!-- End Home -->
     
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/js/flat-ui.min.js'></script>
 
     <!-- DataTables -->
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
