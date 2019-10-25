@@ -14,13 +14,10 @@
     <link rel="shortcut icon" href="static/img/favicon.ico">
 	<!--  bootstrap  -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/flat-ui.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" integrity="sha256-iq5ygGJ7021Pi7H5S+QAUXCPUfaBzfqeplbg/KlEssg=" crossorigin="anonymous" />
 
-    <!--  custom-style -->
-    <!-- <link rel="stylesheet" type="text/css" href='../static/css/select2-flat-theme.min.css'> -->
-    <link rel="stylesheet" type="text/css" href='../static/css/flatui_select2.scss'>
-    
+    <!--  custom-style -->    
     <link rel="stylesheet" type="text/css" href="../static/css/style.css">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -59,7 +56,7 @@
                         </ul>
                     </li>
                     <li><a href="/structure">Structure</a></li>
-                    <li><a href="/moa" class="active">MOA</a></li>
+                    <li class="active"><a href="/moa">MOA</a></li>
                     <li><a href="/help">Help</a></li>
                 </ul>
             </div>
@@ -97,22 +94,22 @@
                         <div class="btn-group searchParams">
                             <button data-toggle="dropdown" class="btn btn-inverse dropdown-toggle" type="button"><span class='searchParam'>EnglishName</span>&nbsp;<span class="caret"></span></button>
                             <ul role="menu" class="dropdown-menu">
-                                <li class='enName'><a href="javascript:void(0)" value='english'>EnglishName</a></li>
-                                <li class='pyName'><a href="javascript:void(0)" value='pinyin'>PinyinName</a></li>
-                                <li class='cnName'><a href="javascript:void(0)" value='chinese'>ChineseName</a></li>
+                                <li class='enName'><a href="javascript:void(0)" value='english_name'>EnglishName</a></li>
+                                <li class='pyName'><a href="javascript:void(0)" value='pinyin_name'>PinyinName</a></li>
+                                <li class='cnName'><a href="javascript:void(0)" value='chinese_name'>ChineseName</a></li>
                             </ul>
                         </div>
 
                         <div class="btn-group searchValue">
-                            <select multiple="multiple" class="tcmsEnglishName form-control multiselect multiselect-info">
+                            <select multiple="multiple" class="tcmsenglish_name form-control multiselect multiselect-info">
                             </select>
-                            <select multiple="multiple" class="tcmsPinyinName form-control multiselect multiselect-info">
+                            <select multiple="multiple" class="tcmspinyin_name form-control multiselect multiselect-info">
                             </select>
-                            <select multiple="multiple" class="tcmsChineseName form-control multiselect multiselect-info">
+                            <select multiple="multiple" class="tcmschinese_name form-control multiselect multiselect-info">
                             </select>
-                            <select multiple="multiple" class="prescriptionsPinyinName form-control multiselect multiselect-info">
+                            <select multiple="multiple" class="prescriptionspinyin_name form-control multiselect multiselect-info">
                             </select>
-                            <select multiple="multiple" class="prescriptionsChineseName form-control multiselect multiselect-info">
+                            <select multiple="multiple" class="prescriptionschinese_name form-control multiselect multiselect-info">
                             </select>
                         </div>
 
@@ -123,22 +120,32 @@
                     </div>
                 </div>
             </div>
-            <div class="panel panel-default result">
+            <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="headingTwo">
                 <h4 class="panel-title">
                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    Mechanism network
+                    View the network
                     </a>
                 </h4>
                 </div>
                 <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                 <div class="panel-body">
-                    <h1>哦啊哈哈哈哈哈哈哈</h1>
-                    <h1>我是一个NETWORK</h1>
+                    <p class="legend">
+                        <strong>Legend:&nbsp;</strong>
+                        <img class="legend-item" src="../static/img/pills.svg" alt="TCM-legend">
+                        <span>TCM</span>&nbsp;&nbsp;|&nbsp;&nbsp;
+                        <img class="legend-item" src="../static/img/pills.svg" alt="Ingredient-legend">
+                        <span>Ingredient</span>&nbsp;&nbsp;|&nbsp;&nbsp;
+                        <img class="legend-item" src="../static/img/pills.svg" alt="Ligand-legend">
+                        <span>Ligand</span>&nbsp;&nbsp;|&nbsp;&nbsp;
+                        <img class="legend-item" src="../static/img/pills.svg" alt="Target-legend">
+                        <span>Target</span>
+                    </p>
+                    <div id="relationChart"></div>
                 </div>
                 </div>
             </div>
-            <div class="panel panel-default">
+            <div class="panel panel-default result">
                 <div class="panel-heading" role="tab" id="headingThree">
                     <h4 class="panel-title">
                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
@@ -164,7 +171,9 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/js/flat-ui.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js" integrity="sha256-JuQeAGbk9rG/EoRMixuy5X8syzICcvB0dj3KindZkY0=" crossorigin="anonymous"></script>
 
+    <script type="text/javascript" charset="utf8" src="../static/js/network.js"></script>
     <script type="text/javascript" charset="utf8" src="../static/js/search.js"></script>
 
     

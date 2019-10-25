@@ -1,11 +1,11 @@
-var selectedName = 'EnglishName';
+var selectedName = 'english_name';
 var searchType = 'tcms';
 var name_datas = {
-    'tcmsEnglishName': [],
-    'tcmsPinyinName': [],
-    'tcmsChineseName': [],
-    'prescriptionsPinyinName': [],
-    'prescriptionsChineseName': []
+    'tcmsenglish_name': [],
+    'tcmspinyin_name': [],
+    'tcmschinese_name': [],
+    'prescriptionspinyin_name': [],
+    'prescriptionschinese_name': []
 };
 
 $(document).ready( function () {
@@ -19,8 +19,6 @@ $(document).ready( function () {
 
 function structure_search(){
     $('.methods ul a').on('click', function () {
-        // $('.methods li').removeClass('active');
-        // $(this).parent().addClass('active');
         var method = $(this).text();
         $('.method').html(method);
         if (method=='Similarity'){
@@ -31,38 +29,45 @@ function structure_search(){
     });
     
     $('.thresholds ul a').on('click', function () {
-        // $('.thresholds li').removeClass('active');
-        // $(this).parent().addClass('active');
         $('.threshold').html($(this).text());
     });
+    $('.types ul a').on('click', function () {
+        $('.type').html($(this).text());
+    });
 
-
+    var method_map = {
+        'Fullstructure': 'exact',
+        'Similarity': 'sim',
+        'Substructure': 'sub'
+    }
     $('.search a').on({
         click: function(){
             var iframe = document.getElementById('iframe');
             var query = iframe.contentWindow.ipmDraw.getMol();
-            var method = $('.methods .active a').attr('value');
-            var threshold = $('.thresholds .active a').attr('value');
-            
-            // 请求数据
-            // $.ajax({
-            //     url: '',
-            //     type: "GET",
-            //     dataType: "html",
-            //     data:{
-            //         'query': query,
-            //         'threshold': threshold
-            //     },
-            //     error: function (jqXHR, textStatus, errorThrown) {
-            //         if (textStatus == "timeout") {
-            //             alert("Request timeout, please refresh the page.");
-            //         } else {
-            //             alert(textStatus);
-            //         }
-            //     }
-            // }).done(function (msg) {
-            //     console.log(msg);
-            // });
+            var method = $('.methods .method').text();
+            var threshold = $('.thresholds .threshold').text().slice(3);
+            var type = $('.types .type').text().toLowerCase();
+
+            $.ajax({
+                url: 'structure/'+type,
+                type: "GET",
+                dataType: "html",
+                data:{
+                    'query': query,
+                    'method': method_map[method],
+                    'threshold': threshold
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    if (textStatus == "timeout") {
+                        alert("Request timeout, please refresh the page.");
+                    } else {
+                        alert(textStatus);
+                    }
+                }
+            }).done(function (msg) {
+                console.log(msg);
+                // TODO: 渲染数据
+            });
             $('#collapseOne').collapse('hide');
             $('#collapseTwo').collapse('show');
         }
@@ -88,9 +93,9 @@ function moa_search(){
         // 更新searchType
         searchType = $(this).attr('value');
         $('.searchType').html(type);
-        if (type=='Prescription'){
+        if (searchType=='prescriptions'){
             $('.searchParam').html('PinyinName');
-            selectedName = 'PinyinName';
+            selectedName = 'pinyin_name';
             $('.searchParams li.enName').addClass('disabled');
         } else {
             $('.searchParams li.enName').removeClass('disabled');
@@ -125,7 +130,7 @@ function moa_search(){
         // 先清空以前选中的数据
         $('.'+searchType+selectedName).val(null).trigger('change');
         // 更新selectedName        
-        selectedName = $(this).text();
+        selectedName = $(this).attr('value');
         if (name_datas[searchType+selectedName].length == 0){
             // setp1: 请求默认数据
             name_datas[searchType+selectedName] = get_names();
@@ -147,26 +152,37 @@ function moa_search(){
         }
     });
 
+    draw(null, null);
+
     $('.search a').on({
         click: function(){
-            // $.ajax({
-            //     url: '',
-            //     type: "GET",
-            //     dataType: "html",
-            //     data:{
-            //         'query': query,
-            //         'threshold': threshold
-            //     },
-            //     error: function (jqXHR, textStatus, errorThrown) {
-            //         if (textStatus == "timeout") {
-            //             alert("Request timeout, please refresh the page.");
-            //         } else {
-            //             alert(textStatus);
-            //         }
-            //     }
-            // }).done(function (msg) {
-            //     console.log(msg);
-            // });
+            var search_val = [];
+            $('.'+searchType+selectedName+' .select2-search-choice div').each(function(index,el){
+                search_val.push($(el).html());
+            });
+            console.log(search_val.join(','));
+            console.log(selectedName);
+            console.log(searchType);
+
+            $.ajax({
+                url: 'network/' + searchType,
+                type: "GET",
+                dataType: "html",
+                data:{
+                    'kw': search_val.join(','),
+                    'type': selectedName
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    if (textStatus == "timeout") {
+                        alert("Request timeout, please refresh the page.");
+                    } else {
+                        alert(textStatus);
+                    }
+                }
+            }).done(function (msg) {
+                console.log(msg);
+                // TODO: 渲染数据
+            });
 
             $('#collapseOne').collapse('hide');
             $('#collapseTwo').collapse('show');
@@ -208,8 +224,14 @@ function initial_select2($el){
 
 function gene_option(data, type){
     var html='';
+    var name_map = {
+        'english_name': 'EnglishName',
+        'pinyin_name': 'PinyinName',
+        'chinese_name': 'ChineseName'
+    }
+    var _type = name_map[type];
     data.forEach(function(currentValue, index){
-        html = html + '<option value="' + data[index]['Id'] + '">'+ data[index][type] +'</option>';
+        html = html + '<option value="' + data[index]['Id'] + '">'+ data[index][_type] +'</option>';
     });
     return html;
 }

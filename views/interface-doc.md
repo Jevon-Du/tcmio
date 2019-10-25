@@ -59,3 +59,22 @@ Data: Array(10)
     ]
 }
 ```
+
+4. 数据方面:
+    - 数据库中空值置Null 而不是 空字符串
+    - Target部分的外链数据末尾多了分号
+    - 每个target需要一个ID, 并绑定内部访问链接
+    - Ingredients中 LigandId 字段是什么意思
+
+
+
+5. 关于浏览页:
+    - 靶点的详情, 不加Ligand信息么?
+    - 同样,ligand详情,不加Target信息么?
+    - 相互关联的信息很重要
+
+
+structure部分:
+url有区别, 但是后端检索结构后,返回的数据内容一样么?
+1. ligand
+2. ingredient
