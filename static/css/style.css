@@ -122,6 +122,11 @@ table.info td {
 
 /* Structure.html */
 
+.marvin-component {
+    width: 70%;
+    margin: 15px auto 0;
+}
+
 .menuContent h3 {
     padding-bottom: 3px;
     border-bottom: gainsboro solid 2px;
@@ -142,6 +147,10 @@ table.info td {
 .prescriptionspinyin_name,
 .prescriptionschinese_name {
     display: None;
+}
+
+.panel-group {
+    margin-bottom: 90px;
 }
 
 .btn-group {
@@ -166,30 +175,8 @@ table.info td {
     z-index: 100;
     position: relative;
 }
-#ctr-pannel {
-    overflow: hidden;
-    width: 278px;
-    height: 550px;
-    margin: 0;
-    border: 1px solid lightgray;
-    transition: all .5s ease-in-out;
-}
-#ctr-pannel .vis-configuration-wrapper {  
-    width: 100%;
-}
-#ctr-pannel .vis-config-s0 {
-    width: auto;
-}
-#ctr-pannel .vis-config-header {
-    border-radius: 3px;
-    background-color: #ececec;
-    float: none;
-    width: 100px;
-    color: #2a6496;
-}
-#ctr-pannel .list-unstyled {
-    color: #828282;
-}
+
+
 .legend-title {
     font-size: 18px;
 }

@@ -1,80 +1,71 @@
 
-# 接口文档
+# TCMIO v1.0 Interface document
 
-## request
-url: 'targets',
-type: 'get',
-data: {
-    offset: 0,
-    limit: RECORDS
-}
+## Request Url  
 
-## response
-```json
-Data: Array(10)
-    0: {ChemblId: "CHEMBL5957;", EcNumber: "3.1.3.5", Function: "Hydrolyzes extracellular nucleotides into membrane…sidase activities. {ECO:0000269|PubMed:21933152}.", GeneName: "NT5E", Kegg: "hsa:4907;", …}
-    1: {ChemblId: "CHEMBL1772928;", EcNumber: "", Function: "Drug efflux transporter present in a number of ste…. Specifically present in limbal stem cells, wher", GeneName: "ABCB5", Kegg: "hsa:340273;", …}
-    2: {ChemblId: "CHEMBL3004;", EcNumber: "7.6.2.2; 7.6.2.3", Function: "Mediates export of organic anions and drugs from t…hione conjugates, leukotriene C4, estradiol-17-be", GeneName: "ABCC1", Kegg: "hsa:4363;", …}
-    3: {ChemblId: "CHEMBL5918;", EcNumber: "", Function: "May act as an inducible transporter in the biliary…tatic hepatocytes (By similarity). {ECO:0000250}.", GeneName: "ABCC3", Kegg: "hsa:8714;", …}
-    4: {ChemblId: "CHEMBL1795197;", EcNumber: "4.6.1.2", Function: "Receptor for the E.coli heat-stable enterotoxin (E…the endogenous peptides guanylin and uroguanylin.", GeneName: "GUCY2C", Kegg: "hsa:2984;", …}
-    5: {ChemblId: "CHEMBL4660;", EcNumber: "3.2.2.6; 2.4.99.20", Function: "Synthesizes the second messengers cyclic ADP-ribos…o moonlights as a receptor in cells of the immune", GeneName: "CD38", Kegg: "hsa:952;", …}
-    6: {ChemblId: "CHEMBL3712864;", EcNumber: "", Function: "Binds copper, nickel, and fatty acids as well as, … the human AFP shows estrogen-binding properties.", GeneName: "AFP", Kegg: "hsa:174;", …}
-    7: {ChemblId: "CHEMBL3594;", EcNumber: "4.2.1.1", Function: "Reversible hydration of carbon dioxide. Participat…ervical neoplasia. {ECO:0000269|PubMed:18703501}.", GeneName: "CA9", Kegg: "hsa:768;", …}
-    8: {ChemblId: "CHEMBL1764938;", EcNumber: "", Function: "Calcium-regulated membrane-binding protein whose a…ibits PCSK9-enhanced LDLR degradation, probably r", GeneName: "ANXA2", Kegg: "hsa:302;", …}
-    9:
-    ChemblId: ""
-    EcNumber: ""
-    Function: "Inhibitor of phospholipase A2, also possesses anti-coagulant properties. Also cleaves the cyclic bond of inositol 1,2-cyclic phosphate to form inositol 1-phosphate."
-    GeneName: "ANXA3"
-    Kegg: "hsa:306;"
-    Length: 323
-    Mass: 36375
-    Name: "Annexin A3 "
-    Pdb: "1AII;1AXN;"
-    ProteinFamily: "Annexin family"
-    UniprotId: "P12429"
-```
-
-问题:
-
-3. MOA和Structures部分,全部和TCMAnalyzer一样么?
+Url                                     |   Method  |   Parametes
+:---                                    |   :---    |   :---
+/targets                                |   get     |   draw=1&start=0&length=5&order[0][column]=0&order[0][dir]=asc
+/targets/:id([0-9]+)                    |   get     |   id
+targets/:id([0-9]+)/json                |   get     |   id
+/ligands                                |   get     |   draw=1&start=0&length=5&order[0][column]=0&order[0][dir]=asc
+/ligands/:id([0-9]+)                    |   get     |   id
+ligands/:id([0-9]+)/json                |   get     |   id
+/ingredients                            |   get     |   draw=1&start=0&length=5&order[0][column]=0&order[0][dir]=asc
+/ingredients/:id([0-9]+)                |   get     |   id
+ingredients/:id([0-9]+)/json            |   get     |   id
+/tcms                                   |   get     |   draw=1&start=0&length=5&order[0][column]=0&order[0][dir]=asc
+/tcms/:id([0-9]+)                       |   get     |   id
+tcms/:id([0-9]+)/json                   |   get     |   id
+/prescriptions                          |   get     |   draw=1&start=0&length=5&order[0][column]=0&order[0][dir]=asc
+/prescriptions/:id([0-9]+)              |   get     |   id
+prescriptions/:id([0-9]+)/json          |   get     |   id
+network/tcms                            |   get     |   kw=丁香,九里香&type=chinese_name
+network/prescriptions                   |   get     |   kw=Yi Qing Jiao Nang&type=pinyin_name
+structure/ligand                        |   get     |   query=Molecule%20from%20ipmDraw&method=sim&threshold=0.9&type=ligand
+structure/ingredient                    |   get     |   query=Molecule%20from%20ipmDraw&method=sim&threshold=0.9&type=ingredient
 
 
-4. 数据方面:
-    - 数据库中空值置Null 而不是 空字符串
-    - Target部分的外链数据末尾多了分号
-    - 每个target需要一个ID, 并绑定内部访问链接
-    - Ingredients中 LigandId 字段是什么意思
 
+## Response
+
+### /targets, /ligands, /ingredients, /tcms, /prescriptions
 
 ```json
 {
     "draw": 1,
     "recordsTotal" : 497,
     "recordsFiltered" : 100,
-    "msg": "",
-    "state": "success",
-    "data": [
-        {...}
-    ]
+    "data": [{…}, …]
 }
 ```
 
-4. 数据方面:
-    - 数据库中空值置Null 而不是 空字符串
-    - Target部分的外链数据末尾多了分号
-    - 每个target需要一个ID, 并绑定内部访问链接
-    - Ingredients中 LigandId 字段是什么意思
+### targets/:id([0-9]+)/json & …
 
+```json
+{
+    "Data": {"Id": 8, "Name": "Carbonic anhydrase 9 ", "GeneName": "CA9",…},
+    "Msg": "",
+    "State": "success"
+}
+```
 
+### network/tcms & network/prescriptions
 
-5. 关于浏览页:
-    - 靶点的详情, 不加Ligand信息么?
-    - 同样,ligand详情,不加Target信息么?
-    - 相互关联的信息很重要
+```json
+{
+    "Data": {"edges":[{…},…], "nodes":[{…},…],
+    "Msg": "",
+    "State": "success"
+}
+```
 
+### structure/ligand & structure/ingredient
 
-structure部分:
-url有区别, 但是后端检索结构后,返回的数据内容一样么?
-1. ligand
-2. ingredient
+```json
+{
+    "Data": ,
+    "Msg": "",
+    "State": "success"
+}
+```

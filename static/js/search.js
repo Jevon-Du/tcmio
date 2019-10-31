@@ -55,7 +55,8 @@ function structure_search(){
                 data:{
                     'query': query,
                     'method': method_map[method],
-                    'threshold': threshold
+                    'threshold': threshold,
+                    'type': type
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     if (textStatus == "timeout") {
@@ -182,10 +183,12 @@ function moa_search(){
             }).done(function (msg) {
                 console.log(msg);
                 // TODO: 渲染数据
+                draw(msg.Data['nodes'], msg.Data['edges']);
             });
 
             $('#collapseOne').collapse('hide');
             $('#collapseTwo').collapse('show');
+            
 
         }
     });
