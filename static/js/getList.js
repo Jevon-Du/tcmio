@@ -182,7 +182,7 @@ function data_format(msg, type){
         var col_name = ['Name', 'GeneName', 'Function', 'ProteinFamily', 'UniprotId', 'ChemblId', 'EcNumber'];
         msg.data.forEach(function(currentValue, index){
             for (var idx in col_name) {
-                var new_val = link_format(currentValue[col_name[idx]], col_name[idx]);
+                var new_val = link_format(currentValue[col_name[idx]], col_name[idx], true);
                 msg.data[index][col_name[idx]] = new_val;
             }
         });
@@ -190,7 +190,6 @@ function data_format(msg, type){
         MOLS.length = 0;
         msg.data.forEach(function(currentValue, index){
             MOLS.push(msg.data[index]['Mol']);
-            // msg.data[index]['Mol'] = ipm_fromat(index);
             msg.data[index]['Mol'] = canvas_format(index);
         });
     }

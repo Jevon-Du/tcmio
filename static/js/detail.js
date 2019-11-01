@@ -30,10 +30,19 @@ function which_type(data_type){
 }
 
 function render(data, data_type){
-    var name = ('Name' in data ? data.Name : data.Id);
-    var heading = which_type(data_type) + ' : ' + name;
-    $('.item_name').html(heading);
-
+    var title = which_type(data_type);
+    if (title=='Prescription'){
+        var heading =  title + ' : ' + data.PinyinName;
+        $('.item_name').html(heading);
+    } else if (title=='Tcm'){
+        var heading =  title + ' : ' + data.EnglishName;
+        $('.item_name').html(heading);
+    } else {
+        var name = ('Name' in data ? data.Name : data.Id);
+        var heading = which_type(data_type) + ' : ' + name;
+        $('.item_name').html(heading);
+    }
+    var flag = title=='Target' ? true : false
     // 创建表格,渲染数据
     var html = '';
     for (var key in data){
@@ -43,7 +52,7 @@ function render(data, data_type){
             if(key=='Mol'){
                 html += '<td class="item_info">' + canvas_format(key) +'</td>';
             } else{
-                html += '<td class="item_info">' + link_format(data[key], key) +'</td>';
+                html += '<td class="item_info">' + link_format(data[key], key, flag) +'</td>';
             }
         } else {
             html += '<td class="item_info"><i>N/A<i></td>';

@@ -1,5 +1,5 @@
 /**********************format every link*******************/
-function link_format(id_val, type){
+function link_format(id_val, type, is_target){
     var db_link = {
         'UniprotId': 'https://www.uniprot.org/uniprot/',
         'ChemblId': 'https://www.ebi.ac.uk/chembl/target_report_card/',
@@ -7,6 +7,9 @@ function link_format(id_val, type){
         'Kegg': 'https://www.genome.jp/dbget-bin/www_bget?',
         'Pdb': 'https://www.rcsb.org/structure/',
         'Drug': 'https://www.drugbank.ca/drugs/'
+    }
+    if (!is_target){
+        db_link['ChemblId'] = 'https://www.ebi.ac.uk/chembl/compound_report_card/'
     }
     var link_icon_el = '&nbsp<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>';
     if (db_link.hasOwnProperty(type)){
