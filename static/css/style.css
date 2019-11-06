@@ -35,6 +35,8 @@ body > .container {
     display: none;
 }
 
+#activities
+
 .footer > .container {
     padding-right: 15px;
     padding-left: 15px;
@@ -61,25 +63,16 @@ code {
     margin-bottom: 70px;
 }
 
-#targets td {
+#targets td,
+#prescriptions td,
+#ligands td,
+#tcms td,
+#ingredients td,
+#tcm_source td,
+#activities td {
     word-break:break-all;
 }
 
-#prescriptions td {
-    word-break:break-all;
-}
-
-#ligands td{
-    word-break:break-all;
-}
-
-#tcms td{
-    word-break:break-all;
-}
-
-#ingredients td{
-    word-break:break-all;
-}
 
 table.info {
     table-layout: fixed;

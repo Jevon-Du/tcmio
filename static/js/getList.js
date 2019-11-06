@@ -171,7 +171,7 @@ function initialize_table(data_type){
         // var order = table.order();
         // $('#orderInfo').html( 'Ordering on column '+order[0][0]+' ('+order[0][1]+')' );
         init_chemdoodle(data_type);
-    } );
+    });
 
    init_chemdoodle(data_type);
 }

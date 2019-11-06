@@ -69,3 +69,20 @@ structure/ingredient                    |   get     |   query=Molecule%20from%20
     "State": "success"
 }
 ```
+
+#### 功能说明
+
+#####　前置条件
+
+进入MOA页面
+
+#### 功能描述
+
+1. 显示图网络
+2. 点击节点展示该节点的简要信息
+
+####　业务规则
+
+1. 节点分为5种, prescription, tcm, ingredient, liagnd
+2. 各节点信息同browse页面的信息
+3. pathway?

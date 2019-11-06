@@ -20,6 +20,10 @@
     <!--  custom-style -->    
     <link rel="stylesheet" type="text/css" href="../static/css/style.css">
 
+    <!-- for chemdoodle -->
+    <script src="../static/js/ChemDoodleWeb-libs.js"></script>
+    <script src="../static/js/ChemDoodleWeb-unpacked.js"></script>
+
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -112,7 +116,7 @@
                     </div>
                 </div>
             </div>
-            <div class="panel panel-default">
+            <div class="panel panel-default result">
                 <div class="panel-heading" role="tab" id="headingTwo">
                 <h4 class="panel-title">
                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -137,17 +141,37 @@
                 </div>
                 </div>
             </div>
-            <div class="panel panel-default result">
+            <div class="panel panel-default pathway">
                 <div class="panel-heading" role="tab" id="headingThree">
                     <h4 class="panel-title">
                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        Mechanism of action
+                        Pathway
                     </a>
                     </h4>
                 </div>
                 <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
                     <div class="panel-body">
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                        <table id="pathways" class="table table-hover table-striped" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Term</th>
+                                    <th>Count</th>
+                                    <th>Percent</th>
+                                    <th>Pvalue</th>
+                                    <th>Genes</th>
+                                    <th>ListTotal</th>
+                                    <th>PopHits</th>
+                                    <th>PopTotal</th>
+                                    <th>FoldEnrichment</th>
+                                    <th>Bonferroni</th>
+                                    <th>Benjamini</th>
+                                    <th>FDR</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -160,12 +184,31 @@
         </div>
     </footer>
     <!-- End Home -->
-    
+
+	<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="moleculeDetails">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title item_name" id="nodeName">Name</h4>
+				</div>
+				<div class="modal-body table-responsive">
+					<table class="info">
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/js/flat-ui.min.js'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js" integrity="sha256-JuQeAGbk9rG/EoRMixuy5X8syzICcvB0dj3KindZkY0=" crossorigin="anonymous"></script>
 
-    <script type="text/javascript" charset="utf8" src="../static/js/data.js"></script>
+    <script type="text/javascript" charset="utf8" src="../static/js/common.js"></script>
+    
+    <script type="text/javascript" charset="utf8" src="../static/js/network_data2.js"></script>
     <script type="text/javascript" charset="utf8" src="../static/js/network.js"></script>
     <script type="text/javascript" charset="utf8" src="../static/js/search.js"></script>
 
