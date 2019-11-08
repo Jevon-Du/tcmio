@@ -118,8 +118,8 @@
                             <div class="btn-group types">
                                 <button data-toggle="dropdown" class="btn btn-inverse dropdown-toggle" type="button"><span class='type'>Ligand</span>&nbsp;<span class="caret"></span></button>
                                 <ul role="menu" class="dropdown-menu dropdown-menu-inverse">
-                                    <li><a href="javascript:void(0)" value='ligand'>Ligand</a></li>
-                                    <li><a href="javascript:void(0)" value='ingredient'>Ingredient</a></li>
+                                    <li><a href="javascript:void(0)" value='ligands'>Ligand</a></li>
+                                    <li><a href="javascript:void(0)" value='ingredients'>Ingredient</a></li>
                                 </ul>
                             </div>
 
@@ -163,7 +163,6 @@
                             <tbody>
                             </tbody>
                     </table>
-            
                     <table id="ingredients" class="uk-table uk-table-hover uk-table-striped" cellspacing="0" width="100%">
                         <thead>
                             <tr>
@@ -193,7 +192,7 @@
                 </div>
                 <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
                     <div class="panel-body">
-                        <table id="activities" class="table table-hover table-striped" cellspacing="0" width="100%">
+                        <table id="ligands_analyze" class="table table-hover table-striped" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
                                     <th>Id</th>
@@ -208,7 +207,7 @@
                             <tbody>
                             </tbody>
                         </table>
-                        <table id='tcm_source' class="table table-hover table-striped" cellspacing="0" width="100%">
+                        <table id='ingredients_analyze' class="table table-hover table-striped" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
                                     <th>ChineseName</th>
@@ -237,10 +236,11 @@
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     
     <script type="text/javascript" charset="utf8" src="../static/js/common.js"></script>
-    <!-- <script type="text/javascript" charset="utf8" src="../static/js/getList.js"></script> -->
+    <script type="text/javascript" charset="utf8" src="../static/js/chemdoodleInitial.js"></script>
+
+    <script type="text/javascript" charset="utf8" src="../static/js/tables.js"></script>
     <script type="text/javascript" charset="utf8" src="../static/js/ligand_msg.js"></script>
     <script type="text/javascript" charset="utf8" src="../static/js/ingredient_msg.js"></script>
-    <script type="text/javascript" charset="utf8" src="../static/js/chemdoodleInitial.js"></script>
     <script type="text/javascript" charset="utf8" src="../static/js/search.js"></script>
 </body>
 </html>

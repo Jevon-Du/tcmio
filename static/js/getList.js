@@ -1,71 +1,3 @@
-var DIVCOUNT = 0;
-var RECORDS = 5;
-var MOLS=[];
-
-var COL_TYPE = {
-    targets: [
-        {"data": "Id", "className":"innerLink", "width":"6%"},
-        {"data": "Name"},
-        {"data": "GeneName"},
-        {"data": "Function", "visible": false},
-        {"data": "ProteinFamily"},
-        {"data": "UniprotId"},
-        {"data": "ChemblId"},
-        {"data": "EcNumber"}
-        // {"data": "Kegg"},
-        // {"data": "Pdb"},
-        // {"data": "Length"},
-        // {"data": "Mass"}
-    ],
-    ligands: [
-        {"data": "Id", "className":"innerLink", "width":"6%"},
-        {"data": "Mol", "width":"200px", "className":"chem-viewer"},
-        {"data": "Name"},
-        {"data": "IngredientId"},
-        {"data": "ChemblId"},
-        // {"data": "Smiles", "visible": false},
-        // {"data": "Inchi", "visible": false},
-        // {"data": "Inchikey", "visible": false},
-        
-        {"data": "Formula", "visible": false},
-        {"data": "MolWeight", "visible": false},
-        {"data": "Hba", "visible": false},
-        {"data": "Hbd", "visible": false},
-        {"data": "Rtb", "visible": false},
-        {"data": "Alogp", "visible": false}     
-    ],
-    ingredients: [
-        {"data": "Id", "className":"innerLink", "width":"6%"},
-        {"data": "Mol", "width":"200px", "className":"chem-viewer"},
-        {"data": "Name"},
-        // {"data": "Synonyms", "visible": false},
-        {"data": "Smiles"},
-        // {"data": "Inchi", "visible": false},
-        // {"data": "Inchikey", "visible": false},      
-        {"data": "LigandId", "visible": false}
-    ],
-    tcms: [
-        {"data": "Id", "className":"innerLink", "width":"6%"},
-        {"data": "ChineseName"},
-        {"data": "PinyinName"},
-        {"data": "EnglishName"},
-        {"data": "UsePart"},
-        {"data": "PropertyFlavor"},
-        {"data": "ChannelTropism"},            
-        {"data": "Effect"},
-        {"data": "Indication"},
-        {"data": "RefSource"}
-    ],
-    prescriptions: [
-        {"data": "Id", "className":"innerLink", "width":"6%"},
-        {"data": "ChineseName"},
-        {"data": "PinyinName"},
-        {"data": "Ingredients"},
-        {"data": "Indication"},
-        {"data": "Effect"},
-        {"data": "RefSource"}
-    ]
-}
 $(document).ready( function () {
     var html_type = window.location.pathname.split('/')[2];
     console.log(html_type);
@@ -174,28 +106,6 @@ function initialize_table(data_type){
     });
 
    init_chemdoodle(data_type);
+
+   return table;
 }
-/**************************** Data fromat ****************************/
-
-function data_format(msg, type){
-    if (type=='targets'){
-        var col_name = ['Name', 'GeneName', 'Function', 'ProteinFamily', 'UniprotId', 'ChemblId', 'EcNumber'];
-        msg.data.forEach(function(currentValue, index){
-            for (var idx in col_name) {
-                var new_val = link_format(currentValue[col_name[idx]], col_name[idx], true);
-                msg.data[index][col_name[idx]] = new_val;
-            }
-        });
-    } else if(type=='ingredients' || type=='ligands'){
-        MOLS.length = 0;
-        msg.data.forEach(function(currentValue, index){
-            MOLS.push(msg.data[index]['Mol']);
-            msg.data[index]['Mol'] = canvas_format(index);
-        });
-    }
-    msg.data.forEach(function(currentValue, index){
-        msg.data[index]['Id'] = '<a href="/' + type +'/' + currentValue['Id'] + '">' + currentValue['Id'] +'</a>';
-    });
-
-    return msg.data;
-};

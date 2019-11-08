@@ -11,15 +11,14 @@ function link_format(id_val, type, is_target){
     if (!is_target){
         db_link['ChemblId'] = 'https://www.ebi.ac.uk/chembl/compound_report_card/'
     }
-    var link_icon_el = '&nbsp<span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>';
     if (db_link.hasOwnProperty(type)){
         var new_el = '';
         if (type=='UniprotId'){
-            new_el = '<a href="https://www.uniprot.org/uniprot/'+ id_val +'" target="_blank">' + id_val + link_icon_el +'</a>';
+            new_el = '<a href="https://www.uniprot.org/uniprot/'+ id_val +'" target="_blank">' + id_val +'</a>';
         } else {
             var ids = id_val.split(';');
             for (var i in ids){
-                new_el = new_el + '<a href="' + db_link[type] + ids[i].replace(' ', '') +'" target="_blank">' + ids[i].replace(' ', '') + link_icon_el +'</a>&nbsp&nbsp';
+                new_el = new_el + '<a href="' + db_link[type] + ids[i].replace(' ', '') +'" target="_blank">' + ids[i].replace(' ', '') + '</a>&nbsp&nbsp';
             }
         }
         return new_el;
@@ -27,11 +26,58 @@ function link_format(id_val, type, is_target){
     return id_val;
 }
 
-function canvas_format(idx){
-    var var_name = 'sketcher' + idx;
+function canvas_format(type, idx){
+    var var_name = type + '_sketcher' + idx;
     var chemdoodle_html = '<canvas id="'+ var_name +'"></canvas>';
     return chemdoodle_html;
 }
+
+// TODO: msg.Data or msg.data
+function data_format(msg, type){
+    if (type=='targets'){
+        var col_name = ['Name', 'GeneName', 'Function', 'ProteinFamily', 'UniprotId', 'ChemblId', 'EcNumber'];
+        msg.data.forEach(function(currentValue, index){
+            for (var idx in col_name) {
+                var new_val = link_format(currentValue[col_name[idx]], col_name[idx], true);
+                msg.data[index][col_name[idx]] = new_val;
+            }
+        });
+    } else if(type=='ingredients' || type=='ligands'){
+        MOLS.length = 0;
+        msg.data.forEach(function(currentValue, index){
+            MOLS.push(msg.data[index]['Mol']);
+            msg.data[index]['Mol'] = canvas_format(type, index);
+        });
+    }
+    msg.data.forEach(function(currentValue, index){
+        msg.data[index]['Id'] = '<a href="/' + type +'/' + currentValue['Id'] + '">' + currentValue['Id'] +'</a>';
+    });
+
+    return msg.data;
+};
+
+function analyze_data_format(msg, type){
+    if (type=='ingredients'){
+        msg.data.forEach(function(currentValue, index){
+            var ids = currentValue['IngredientID'].split(';');
+            var new_el = '';
+            for (var i in ids){
+                new_el = new_el + '<a href="/ingredients/' + currentValue['IngredientID'] + '" target="_blank">' + currentValue['IngredientID'] +'</a>&nbsp&nbsp';
+            };
+            msg.data[index]['IngredientID'] = new_el;
+        });
+    } else if(type=='ligands'){
+        msg.data.forEach(function(currentValue, index){
+            msg.data[index]['TargetChemblId'] = link_format(currentValue['TargetChemblId'], 'ChemblId', true);
+            msg.data[index]['MolChemblId'] = link_format(currentValue['MolChemblId'], 'ChemblId', false);
+        });
+    }
+
+    return msg.data;
+}
+
+
+
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -58,7 +104,7 @@ function init_chemdoodle(data_type){
             var tds = $('#'+data_type+ ' tbody tr td canvas');
             if (tds) {
                 tds.each(function(index,element){
-                    var myCanvas = new ChemDoodle.ViewerCanvas('sketcher'+index, 200, 200);
+                    var myCanvas = new ChemDoodle.ViewerCanvas(data_type+'_sketcher'+index, 200, 200);
                     myCanvas.emptyMessage = 'No Data Loaded!';
                     myCanvas.repaint();
                     var mol = ChemDoodle.readMOL(MOLS[index]);
