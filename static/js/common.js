@@ -27,8 +27,8 @@ function link_format(id_val, type, is_target){
 }
 
 function canvas_format(type, idx){
-    var var_name = type + '_sketcher' + idx;
-    var chemdoodle_html = '<canvas id="'+ var_name +'"></canvas>';
+    var id_name = type + '_sketcher' + idx;
+    var chemdoodle_html = '<canvas id="'+ id_name +'"></canvas>';
     return chemdoodle_html;
 }
 
@@ -77,8 +77,6 @@ function analyze_data_format(msg, type){
 }
 
 
-
-
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -116,12 +114,13 @@ function init_chemdoodle(data_type){
     }, 100);
 
     var interval2 = setInterval(function() {
-        $('.dataTables_length select').addClass('form-control select select-default');
+        $('.dataTables_length select').addClass('form-control select select-primary');
         $('.dataTables_length select').select2({
-            dropdownCssClass: 'dropdown-inverse',
+            // dropdownCssClass: 'dropdown-inverse',
             width: '70px',
             allowClear: false
         });
+
         if ($('.select-default')) {
             clearInterval(interval2);
         }

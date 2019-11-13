@@ -31,6 +31,16 @@ body > .container {
     margin: 20px 0;
 }
 
+.breadcrumb {
+    display: none;
+}
+
+.colsVisibility {
+    display: none;
+    margin-bottom: -46px;
+    z-index: 999;
+}
+
 .container .uk-table {
     display: none;
 }

@@ -86,3 +86,12 @@ structure/ingredient                    |   get     |   query=Molecule%20from%20
 1. 节点分为5种, prescription, tcm, ingredient, liagnd
 2. 各节点信息同browse页面的信息
 3. pathway?
+
+
+TODO:
+
+[] 每个节点制作不同的logo
+[] Download Figure
+[] Download Network ??
+[] pathway的数据请求,如何触发
+

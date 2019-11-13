@@ -17,8 +17,9 @@ $(document).ready( function () {
         console.log(msg);
         var type= html_type.split('/')[1];
         render(msg.Data, type);
-        if ('Mol' in msg.Data){
-            show_mol_structure(msg.Data.Mol);
+
+        if (type=='ligands' || type=='ingredients'){
+            show_mol_structure(msg.Data.Mol, type);
         }
     });
 
@@ -50,7 +51,7 @@ function render(data, data_type){
         html += '<th class="item_name">' + key +'</th>';
         if (data[key]){
             if(key=='Mol'){
-                html += '<td class="item_info">' + canvas_format(key) +'</td>';
+                html += '<td class="item_info">' + canvas_format(data_type, 1) +'</td>';
             } else{
                 html += '<td class="item_info">' + link_format(data[key], key, flag) +'</td>';
             }
@@ -63,8 +64,9 @@ function render(data, data_type){
     $('.info tbody').append(html);
 }
 
-function show_mol_structure(molstr){
-    var myCanvas = new ChemDoodle.ViewerCanvas('sketcherMol', 300, 300);
+function show_mol_structure(molstr, type){
+    var id_name = type + '_sketcher1';
+    var myCanvas = new ChemDoodle.ViewerCanvas(id_name, 300, 300);
     myCanvas.emptyMessage = 'No Data Loaded!';
     myCanvas.repaint();
     var mol = ChemDoodle.readMOL(molstr);

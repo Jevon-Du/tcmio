@@ -146,16 +146,13 @@ function structure_search(){
 
             var data_type = type+'s';
 
-            console.log(TABLE1);
-            console.log(TABLE2);
-
+            // 方法一: 如果表格已经初始化, 则destory, 但是这种方式涉及大量dom操作,影响性能
             if (TABLE1 & TABLE2){
                 TABLE1.destroy(false); //false: 保留原始的DOM
                 TABLE2.destroy(false);
                 TABLE1 = null;
                 TABLE2 = null;
             }
-            console.log(data_type);
 
             // 初始化查询结果表格
             TABLE1 = initialize_table_in_browse(data_type, request, false, true, '<r<t>ip>');

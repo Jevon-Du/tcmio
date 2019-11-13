@@ -52,11 +52,11 @@ var COL_TYPE = {
         {"data": "ChineseName"},
         {"data": "PinyinName"},
         {"data": "EnglishName"},
-        {"data": "UsePart"},
-        {"data": "PropertyFlavor"},
-        {"data": "ChannelTropism"},            
-        {"data": "Effect"},
-        {"data": "Indication"},
+        {"data": "UsePart", "visible": false},
+        {"data": "PropertyFlavor", "visible": false},
+        {"data": "ChannelTropism", "visible": false},            
+        {"data": "Effect", "visible": false},
+        {"data": "Indication", "visible": false},
         {"data": "RefSource"}
     ],
     prescriptions: [
@@ -111,18 +111,12 @@ function initialize_table_in_browse(data_type, request, has_button, has_mol, dom
                 return data_format(msg, data_type);
             }
         },
+        deferRender: true,
         columns: COL_TYPE[data_type],
         dom: dom_,
         ordering: true,
         pagingType: "full_numbers",
         pageLength: 5, //每页显示的初始记录数量
-        language: {
-            "lengthMenu": "每页 _MENU_ 条记录",
-            "zeroRecords": "没有找到记录",
-            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
-            "infoEmpty": "无记录",
-            "infoFiltered": "(从 _MAX_ 条记录过滤)"
-        },
         // stateSave: true
     });
 
@@ -224,6 +218,7 @@ function initialize_table_in_structure(data_type, request){
                 return analyze_data_format(msg, data_type);
             }
         },
+        deferRender: true,
         // data: data_arrays,
         columns: COL_TYPE[data_type],
         dom: '<r<t>ip>',
@@ -231,13 +226,6 @@ function initialize_table_in_structure(data_type, request){
         pagingType:   "full_numbers",
         pageLength: 6, //每页显示的初始记录数量
         lengthChange: false, //允许修改每页的记录数量
-        language: {
-            "lengthMenu": "每页 _MENU_ 条记录",
-            "zeroRecords": "没有找到记录",
-            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
-            "infoEmpty": "无记录",
-            "infoFiltered": "(从 _MAX_ 条记录过滤)"
-        }
     });
 
     // 采用本地json数据测试通过
