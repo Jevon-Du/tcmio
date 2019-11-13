@@ -81,6 +81,21 @@ var COL_TYPE = {
         {"data": "ChineseName"},
         {"data": "IngredientID", "className":"innerLink"},
         {"data": "Count"}
+    ],
+    pathways: [
+        {"data": "Category"},
+        {"data": "Term"},
+        {"data": "Count"},
+        {"data": "Percent"},
+        {"data": "Pvalue"},
+        {"data": "Genes"},
+        {"data": "ListTotal", "visible": false},
+        {"data": "PopHits", "visible": false},
+        {"data": "PopTotal", "visible": false},
+        {"data": "FoldEnrichment", "visible": false},
+        {"data": "Bonferroni", "visible": false},
+        {"data": "Benjamini", "visible": false},
+        {"data": "FDR", "visible": false}
     ]
 };
 
@@ -102,7 +117,7 @@ function initialize_table_in_browse(data_type, request, has_button, has_mol, dom
         serverSide: true,
         autoWidth: true,
         ajax: {
-            url: '/'+data_type,
+            url: '/structure/'+data_type,
             type: 'get',
             data: function ( d ) {
                 return $.extend( {}, d, request);
@@ -260,3 +275,24 @@ function initialize_table_in_structure(data_type, request){
     return table;
 }
 
+function initialize_table_in_pathway($table, data_arrays){
+    /**
+     * 动态请求数据, 使用data_type构造url
+     * @param data_arrays: arrays, pathway数据
+     * @return {table} DataTable对象
+     */
+    $table.destroy(false);
+    var table = $table.DataTable({
+        sserverSide: false,
+        autoWidth: true,
+        data: data_arrays,
+        columns: COL_TYPE['pathways'],
+        dom: '<r<t>ip>',
+        ordering: true,
+        pagingType: "full_numbers",
+        pageLength: 6,
+        lengthChange: false
+    });
+
+    return table;
+}

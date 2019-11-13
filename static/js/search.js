@@ -1,91 +1,10 @@
 /*
 **  global variable
 */
-//  存储所有的节点数组和边数组的对象
-var analyzeResult=null;
-
-//  存储当前选中节点的box位置，click时触发
-var nodePostion=null;
-
-//  存储当前选中节点时所展示的详细信息
-var detailNodeInfo=null;
-
-//  存储当前选中节点的Group
-var selectedNodeGroup=null;
-
-var DIVCOUNT = 0;
-var RECORDS = 5;
-var MOLS=[];
 
 var TABLE1 = null;
 var TABLE2 = null;
 var TABLES = [];
-
-// var COL_TYPE = {
-//     targets: [
-//         {"data": "Id", "className":"innerLink", "width":"6%"},
-//         {"data": "Name"},
-//         {"data": "GeneName"},
-//         {"data": "Function", "visible": false},
-//         {"data": "ProteinFamily"},
-//         {"data": "UniprotId"},
-//         {"data": "ChemblId"},
-//         {"data": "EcNumber"}
-//         // {"data": "Kegg"},
-//         // {"data": "Pdb"},
-//         // {"data": "Length"},
-//         // {"data": "Mass"}
-//     ],
-//     ligands: [
-//         {"data": "Id", "className":"innerLink", "width":"6%"},
-//         {"data": "Mol", "width":"200px", "className":"chem-viewer"},
-//         {"data": "Name"},
-//         {"data": "IngredientId"},
-//         {"data": "ChemblId"},
-//         // {"data": "Smiles", "visible": false},
-//         // {"data": "Inchi", "visible": false},
-//         // {"data": "Inchikey", "visible": false},
-        
-//         {"data": "Formula", "visible": false},
-//         {"data": "MolWeight", "visible": false},
-//         {"data": "Hba", "visible": false},
-//         {"data": "Hbd", "visible": false},
-//         {"data": "Rtb", "visible": false},
-//         {"data": "Alogp", "visible": false}     
-//     ],
-//     ingredients: [
-//         {"data": "Id", "className":"innerLink", "width":"6%"},
-//         {"data": "Mol", "width":"200px", "className":"chem-viewer"},
-//         {"data": "Name"},
-//         // {"data": "Synonyms", "visible": false},
-//         {"data": "Smiles"},
-//         // {"data": "Inchi", "visible": false},
-//         // {"data": "Inchikey", "visible": false},      
-//         {"data": "LigandId", "visible": false}
-//     ],
-//     tcms: [
-//         {"data": "Id", "className":"innerLink", "width":"6%"},
-//         {"data": "ChineseName"},
-//         {"data": "PinyinName"},
-//         {"data": "EnglishName"},
-//         {"data": "UsePart"},
-//         {"data": "PropertyFlavor"},
-//         {"data": "ChannelTropism"},            
-//         {"data": "Effect"},
-//         {"data": "Indication"},
-//         {"data": "RefSource"}
-//     ],
-//     prescriptions: [
-//         {"data": "Id", "className":"innerLink", "width":"6%"},
-//         {"data": "ChineseName"},
-//         {"data": "PinyinName"},
-//         {"data": "Ingredients"},
-//         {"data": "Indication"},
-//         {"data": "Effect"},
-//         {"data": "RefSource"}
-//     ]
-// }
-
 
 var selectedName = 'english_name';
 var searchType = 'tcms';
@@ -160,6 +79,8 @@ function structure_search(){
             TABLE2 = initialize_table_in_structure(data_type, request);
             
             if (data_type=='ingredients') {
+                $('#result .panel-title a').html('Hits');
+                $('#activity .panel-title a').html('TCM');
 
                 $('#ligands_wrapper').hide();
                 $('#ligands_analyze_wrapper').hide();
@@ -170,6 +91,8 @@ function structure_search(){
                 $('#ingredients_analyze_wrapper').show(100);
 
             } else if (type=='ligand') {
+                $('#result .panel-title a').html('Ligand Hits');
+                $('#activity .panel-title a').html('Activity');
 
                 $('#ingredients_wrapper').hide();
                 $('#ingredients_analyze_wrapper').hide();
@@ -266,8 +189,6 @@ function moa_search(){
         }
     });
 
-    // draw(null, null);
-
     $('.search a').on({
         click: function(){
             var search_val = [];
@@ -275,33 +196,69 @@ function moa_search(){
                 search_val.push($(el).html());
             });
 
-            draw(network_data2['nodes'], network_data2['edges']);
-
-            // $.ajax({
-            //     url: 'network/' + searchType,
-            //     type: "GET",
-            //     dataType: "html",
-            //     data:{
-            //         'kw': search_val.join(','),
-            //         'type': selectedName
-            //     },
-            //     error: function (jqXHR, textStatus, errorThrown) {
-            //         if (textStatus == "timeout") {
-            //             alert("Request timeout, please refresh the page.");
-            //         } else {
-            //             alert(textStatus);
-            //         }
-            //     }
-            // }).done(function (msg) {
-            //     console.log(msg);
-            //     // TODO: 渲染数据
-            //     draw(msg.Data['nodes'], msg.Data['edges']);
-            // });
-
-            $('#collapseOne').collapse('hide');
-            $('#collapseTwo').collapse('show');
+            // 加载本地json数据绘制网络
+            // draw(network_data2['nodes'], network_data2['edges']);
+            // $('#collapseOne').collapse('hide');
+            // $('#collapseTwo').collapse('show');
             
+            // 请求网络数据
+            $.ajax({
+                url: 'network/' + searchType,
+                type: "GET",
+                dataType: "html",
+                data:{
+                    'kw': search_val.join(','),
+                    'type': selectedName
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    if (textStatus == "timeout") {
+                        alert("Request timeout, please refresh the page.");
+                    } else {
+                        alert(textStatus);
+                    }
+                }
+            }).done(function (msg) {
+                console.log(msg);
+                draw(msg.Data['nodes'], msg.Data['edges']);
 
+                $('#collapseOne').collapse('hide');
+                $('#collapseTwo').collapse('show');
+            
+            });
+        }
+    });
+
+    //点击pathway请求数据
+    $('#collapseThree').on({
+        click: function(){
+            var search_val = [];
+            $('.'+searchType+selectedName+' .select2-search-choice div').each(function(index,el){
+                search_val.push($(el).html());
+            });
+            // 请求pathway数据
+            $.ajax({
+                url: '/',
+                type: "GET",
+                dataType: "html",
+                data:{
+                    'kw': search_val.join(','),
+                    'type': selectedName
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    if (textStatus == "timeout") {
+                        alert("Request timeout, please refresh the page.");
+                    } else {
+                        alert(textStatus);
+                    }
+                }
+            }).done(function (msg) {
+                console.log(msg);
+                var $table_pathways = $('#pathways').DataTable();
+                initialize_table_in_pathway($table_pathways, msg.Data);
+                $('#pathways').show(100);
+                $('#pathways').show(100);
+                // $('#collapseThree').collapse('show');
+            });
         }
     });
 }
@@ -336,7 +293,6 @@ function initial_select2($el){
     });
 }
 
-
 function gene_option(data, type){
     var html='';
     var name_map = {
@@ -351,48 +307,3 @@ function gene_option(data, type){
     return html;
 }
 
-function initialize_table(data_type){
-    var $table = $('#' + data_type);
-
-    var table = $table.DataTable({
-        serverSide: true,
-        autoWidth: true,
-        ajax: {
-            url: '/'+data_type,
-            type: 'get',
-            dataSrc: function (msg) {
-                return data_format(msg, data_type);
-            }
-        },
-        columns: COL_TYPE[data_type],
-        dom: '<r<t>ip>',
-        ordering: true,
-        scrollX: true,
-        pagingType:   "full_numbers",
-        pageLength: 5, //每页显示的初始记录数量
-        language: {
-            "lengthMenu": "每页 _MENU_ 条记录",
-            "zeroRecords": "没有找到记录",
-            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
-            "infoEmpty": "无记录",
-            "infoFiltered": "(从 _MAX_ 条记录过滤)"
-        }
-    });
-    // 翻页事件的处理
-    $table.on( 'page.dt', function () {
-        // var info = table.page.info();
-        // $('#pageInfo').html( 'Showing page: '+info.page+' of '+info.pages );
-        init_chemdoodle(data_type);
-    });
-
-    // 排序事件处理
-    $table.on( 'order.dt', function () {
-        // This will show: "Ordering on column 1 (asc)", for example
-        // var order = table.order();
-        // $('#orderInfo').html( 'Ordering on column '+order[0][0]+' ('+order[0][1]+')' );
-        init_chemdoodle(data_type);
-    });
-
-   init_chemdoodle(data_type);
-}
-/**************************** Data fromat ****************************/

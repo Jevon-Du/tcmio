@@ -45,6 +45,7 @@ body > .container {
     display: none;
 }
 
+#pathways,
 #ligands_analyze,
 #ingredients_analyze {
     display: none;

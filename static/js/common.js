@@ -56,6 +56,7 @@ function data_format(msg, type){
     return msg.data;
 };
 
+
 function analyze_data_format(msg, type){
     if (type=='ingredients'){
         msg.data.forEach(function(currentValue, index){
@@ -86,7 +87,6 @@ function ipm_fromat(idx){
     var iframe_el = '<iframe id="iframe'+ idx +'" name="' + idx +'" src="static/ipmDraw/editor.html" frameborder="0" width="300px" height="300px"></iframe>';
     return iframe_el;
 }
-
 
 function loadMolecule(index, mol) {
     var tempCanvas = canMap.get(index);
@@ -127,3 +127,11 @@ function init_chemdoodle(data_type){
     }, 100);
 }
 
+function show_mol_structure(molstr, type){
+    var id_name = type + '_sketcher1';
+    var myCanvas = new ChemDoodle.ViewerCanvas(id_name, 300, 300);
+    myCanvas.emptyMessage = 'No Data Loaded!';
+    myCanvas.repaint();
+    var mol = ChemDoodle.readMOL(molstr);
+    myCanvas.loadMolecule(mol);
+}

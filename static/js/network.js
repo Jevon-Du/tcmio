@@ -22,8 +22,9 @@ function draw(node_data, edge_data) {
         nodes: nodes,
         edges: edges
     };
+
     var options = {
-        
+
         groups: {
             'useDefaultGroups': false,
             'prescriptions': {
@@ -36,27 +37,23 @@ function draw(node_data, edge_data) {
                     strokeColor: '#fff',
                     align: 'center'
                 },
-                size: 30,
-                // shape: 'square',
                 shape: 'triangle',
-                /*color: 'rgba(238,99,99,1)',*/
-                // color: {background:'#F03967', border:'#713E7F'}
-                color: 'rgba(251,0,2,1)'
+                color: '#FF9900' // orange
             },
             'tcms': {
-                color: 'rgba(255,160,122,1)'
+                shape: 'square',
+                color: "#C5000B" // red
             },
             'ingredients': {
                 size: 20,
                 shape: 'dot',
-                color: 'rgba(92,172,238,1)'
-                    /*color:'rgba(255,255,0,1)'*/
+                color:'#97C2FC' // blue
             },
             'ligands': {
                 size: 20,
-                shape: 'diamond',
-                color: { background: 'pink', border: 'purple' }
-                /*color:'rgba(92,172,238,1)'*/
+                shape: 'star',
+                color:'#7BE141'
+                // color: "#109618" // purple
             },
             'targets': {
                 font: {
@@ -67,10 +64,8 @@ function draw(node_data, edge_data) {
                     strokeColor: '#ffffff',
                     align: 'center'
                 },
-                size: 30,
-                shape: 'square',
-                color: 'lime',
-                border: 2,
+                shape: 'diamond',
+                color: '#FB7E81'
             }
         },
         edges: {
@@ -139,6 +134,7 @@ function draw(node_data, edge_data) {
     //     // really clean the dom element
     //     setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
     // });
+
     network.on("selectNode", function (){
         //$("#mask").show();
         //$(".mol-detail").show();
@@ -186,9 +182,11 @@ function draw(node_data, edge_data) {
             console.log(msg);
 
             render(msg.Data, selectedNodeGroup);
-            if ('Mol' in msg.Data){
-                show_mol_structure(msg.Data.Mol);
+
+            if (selectedNodeGroup=='ligands' || selectedNodeGroup=='ingredients'){
+                show_mol_structure(msg.Data.Mol, selectedNodeGroup);
             }
+
             $(".modal").modal("show");
         });
     });
@@ -223,7 +221,7 @@ function render(data, data_type){
         html += '<th class="item_name">' + key +'</th>';
         if (data[key]){
             if(key=='Mol'){
-                html += '<td class="item_info">' + canvas_format(key) +'</td>';
+                html += '<td class="item_info">' + canvas_format(data_type, 1) +'</td>';
             } else{
                 html += '<td class="item_info">' + link_format(data[key], key, flag) +'</td>';
             }
@@ -236,10 +234,51 @@ function render(data, data_type){
     $('.info tbody').append(html);
 }
 
-function show_mol_structure(molstr){
-    var myCanvas = new ChemDoodle.ViewerCanvas('sketcherMol', 300, 300);
-    myCanvas.emptyMessage = 'No Data Loaded!';
-    myCanvas.repaint();
-    var mol = ChemDoodle.readMOL(molstr);
-    myCanvas.loadMolecule(mol);
-}
+//  save img 功能：将canvase先转化为base64字符串，再转为png/jpg/gif/bmp
+$(".js-saveCanvas").on("click",function (){
+    var mydate = new Date();      
+    var year=mydate.getFullYear();
+    var month=mydate.getMonth() + 1;
+    var day=mydate.getDate();
+    var time = year + month + day;
+
+    var oCanvas = document.getElementsByTagName("canvas")[0];
+    // 图片导出为 png 格式  
+    // var type = $(".btn-xs").attr("name"); 
+    var type = 'png'; 
+    var imgData = oCanvas.toDataURL(type);
+
+    /** 
+     * 获取mimeType 
+     * @param  {String} type the old mime-type 
+     * @return the new mime-type 
+     */  
+    var _fixType = function(type) {  
+        type = type.toLowerCase().replace(/jpg/i, 'jpeg');  
+        var r = type.match(/png|jpeg|bmp|gif/)[0];  
+        return 'image/' + r;  
+    };  
+        
+    // 加工image data，替换mime type  
+    imgData = imgData.replace(_fixType(type),'image/octet-stream');  
+
+    /** 
+     * 在本地进行文件保存 
+     * @param  {String} data     要保存到本地的图片数据 
+     * @param  {String} filename 文件名 
+     */  
+    function saveFile(data, filename){  
+        var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');  
+        save_link.href = data;  
+        save_link.download = filename;  
+        
+        var event = document.createEvent('MouseEvents');  
+        event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);  
+        save_link.dispatchEvent(event);  
+    };  
+        
+    // 下载后的问题名  
+    var filename = time + 'network.' + type; 
+    //console.log(oCanvas.toDataURL("image/png"));
+    saveFile(imgData,filename);
+});

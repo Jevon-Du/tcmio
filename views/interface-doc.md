@@ -92,6 +92,10 @@ TODO:
 
 [] 每个节点制作不同的logo
 [] Download Figure
-[] Download Network ??
 [] pathway的数据请求,如何触发
+
+[] 专利写作
+[] TCMIO功能修复
+[] 人月神话阅读完一章
+[] 工作进展发邮件
 

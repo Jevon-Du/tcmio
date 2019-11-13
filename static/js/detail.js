@@ -63,12 +63,3 @@ function render(data, data_type){
 
     $('.info tbody').append(html);
 }
-
-function show_mol_structure(molstr, type){
-    var id_name = type + '_sketcher1';
-    var myCanvas = new ChemDoodle.ViewerCanvas(id_name, 300, 300);
-    myCanvas.emptyMessage = 'No Data Loaded!';
-    myCanvas.repaint();
-    var mol = ChemDoodle.readMOL(molstr);
-    myCanvas.loadMolecule(mol);
-}
