@@ -56,6 +56,15 @@ func (this *MainController) DetailPrescription() {
 
 }
 
+/* node id infor
+1->Pres:1-1493-------->+10000
+2->TCM:1-618---------->+1000
+3->Ingredient:1-16437->+100000
+4->Ligand:1-126972---->+200000
+5->Target:1-400------->+0
+
+*/
+
 func (this *MainController) AnalyzePrescription() {
 	fmt.Println("Prescription analysis")
 	nameType := strings.TrimSpace(this.GetString("type"))
@@ -75,7 +84,7 @@ func (this *MainController) AnalyzePrescription() {
 
 	var n Node
 	var e Edge
-	n.Id = p.Id + 400000
+	n.Id = p.Id + 10000
 	n.Group = "prescriptions"
 	n.Label = p.ChineseName
 
