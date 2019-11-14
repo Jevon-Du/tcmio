@@ -172,10 +172,10 @@ func (this *MainController) AnalyzePrescription() {
 		_, err := it.Query().Filter("ingredient_id", i.Id).All(&its)
 		if err != nil {
 			//panic(err)
-			fmt.Println(err)
+			//fmt.Println(err)
 			continue
 		}
-		fmt.Println(len(its))
+		//fmt.Println(len(its))
 		for _, x := range its {
 			var tr models.Target
 			err = tr.Query().Filter("id", x.TargetId).One(&tr)

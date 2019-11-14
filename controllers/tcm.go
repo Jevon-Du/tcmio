@@ -147,7 +147,7 @@ func (this *MainController) AnalyzeTCMs() {
 		_, err := it.Query().Filter("ingredient_id", i.Id).All(&its)
 		if err != nil {
 			//panic(err)
-			fmt.Println(err)
+			//fmt.Println(err)
 			continue
 		}
 		for _, x := range its {
