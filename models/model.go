@@ -27,6 +27,7 @@ func init() {
 	orm.RegisterModel(new(TCM))
 	orm.RegisterModel(new(TCM_Prescription))
 	orm.RegisterModel(new(TCM_Ingredient))
+	orm.RegisterModel(new(Ingredient_Target))
 	orm.RegisterModel(new(Target_ligand))
 	orm.RegisterModel(new(Prescription))
 	orm.RegisterModel(new(Docs))
