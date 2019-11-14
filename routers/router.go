@@ -22,7 +22,6 @@ func init() {
 	beego.Router("/ligands", &controllers.MainController{}, "get:ListLigands")
 	beego.Router("/ligands/:id([0-9]+)", &controllers.MainController{}, "get:Detail")
 	beego.Router("/ligands/:id([0-9]+)/json", &controllers.MainController{}, "get:DetailLigand")
-	beego.Router("/ligands/structure/:method", &controllers.MainController{}, "get:SearchLigands")
 
 	beego.Router("/ingredients", &controllers.MainController{}, "get:ListIngredients")
 	beego.Router("/ingredients/:id([0-9]+)", &controllers.MainController{}, "get:Detail")
@@ -31,14 +30,17 @@ func init() {
 	beego.Router("/tcms", &controllers.MainController{}, "get:ListTCMs")
 	beego.Router("/tcms/:id([0-9]+)", &controllers.MainController{}, "get:Detail")
 	beego.Router("/tcms/:id([0-9]+)/json", &controllers.MainController{}, "get:DetailTCM")
-	beego.Router("/tcms/network", &controllers.MainController{}, "*:AnalyzeTCMs")
 
 	beego.Router("/prescriptions", &controllers.MainController{}, "get:ListPrescriptions")
 	beego.Router("/prescriptions/:id([0-9]+)", &controllers.MainController{}, "get:Detail")
 	beego.Router("/prescriptions/:id([0-9]+)/json", &controllers.MainController{}, "get:DetailPrescription")
-	beego.Router("/prescriptions/network", &controllers.MainController{}, "*:AnalyzePrescription")
 
-	beego.Router("/structure/ligand/:method", &controllers.MainController{}, "*:StructureSearchLigand")
-	beego.Router("/structure/ingredient/:method", &controllers.MainController{}, "*:StructureSearchIngredient")
+	beego.Router("/structure/ligands", &controllers.MainController{}, "*:StructureSearchLigand")
+	beego.Router("/structure/analyze/ligands", &controllers.MainController{}, "*:AnalyzeStructureSearchLigand")
+	beego.Router("/structure/ingredients", &controllers.MainController{}, "*:StructureSearchIngredient")
+	beego.Router("/structure/analyze/ingredients", &controllers.MainController{}, "*:AnalyzeStructureSearchIngredient")
+
+	beego.Router("/network/tcms", &controllers.MainController{}, "*:AnalyzeTCMs")
+	beego.Router("/network/prescriptions", &controllers.MainController{}, "*:AnalyzePrescription")
 
 }
