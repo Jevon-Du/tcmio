@@ -100,7 +100,7 @@ func (this *MainController) AnalyzePrescription() {
 			}
 			tcms = append(tcms, t)
 
-			n.Id = t.Id + 100000
+			n.Id = t.Id + 1000
 			n.Group = "tcms"
 			n.Label = t.PinyinName
 			nodes = append(nodes, n)
