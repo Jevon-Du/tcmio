@@ -18,6 +18,16 @@ func GetTargets() {
 	fmt.Println(tars)
 }
 
+func GetTargetUniProtIDs(tar []models.Target) []string {
+	var uniprots []string
+	for _, t := range tar {
+		if t.UniprotId != "" {
+			uniprots = append(uniprots, t.UniprotId)
+		}
+	}
+	return uniprots
+}
+
 func DataProcess() {
 	fmt.Println("Processing ...")
 

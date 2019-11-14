@@ -5,6 +5,8 @@ import (
 	"os"
 	"tcmio/models"
 
+	"github.com/tealeg/xlsx"
+
 	"github.com/astaxie/beego/orm"
 )
 
@@ -155,5 +157,241 @@ func PrescriptionNetwork() {
 			}
 		}
 	}
+
+}
+
+func CleanData() {
+	var ing models.TCM_Ingredient
+	var ings []models.TCM_Ingredient
+	_, err := ing.Query().Limit(10000000).All(&ings)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	var uni []models.TCM_Ingredient
+	for _, s := range ings {
+		check := 0
+		for _, t := range uni {
+			if s.TcmId == t.TcmId && s.IngredientId == t.IngredientId {
+				fmt.Println(s)
+				check = 1
+				var a models.TCM_Ingredient
+
+				err := a.Query().Filter("id", s.Id).One(&a)
+				if err != nil {
+					panic(err)
+				}
+				err = a.Delete()
+				if err != nil {
+					panic(err)
+				}
+				break
+			}
+		}
+		if check == 0 {
+			uni = append(uni, s)
+		}
+
+	}
+
+	fmt.Println(len(ings))
+	fmt.Println(len(uni))
+
+}
+
+type NP_Target struct {
+	Tcmid    string
+	Inchikey string
+	GeneName string
+}
+
+type UTarget struct {
+	Target   string
+	GeneName string
+	ChemblId string
+	Uniprot  string
+	PrefName string
+	Tid      string
+	Organism string
+}
+
+type TCM_NP struct {
+	Herb     string
+	Pinyin   string
+	Inchikey string
+	Tcmid    string
+}
+
+type TCM struct {
+	ChineseName string
+	Pinyin      string
+}
+
+func GetNPTarget() {
+
+	// get tcm-np infor
+	xlFile, err := xlsx.OpenFile("TCM_TARGET_part1.xlsx")
+	if err != nil {
+		fmt.Println("err in open file")
+	}
+	var nts []NP_Target
+	var ts []UTarget
+	fmt.Println("start")
+	for j, sheet := range xlFile.Sheets {
+		if j == 0 {
+			for i, row := range sheet.Rows {
+				if i < 1 {
+					continue
+				}
+				if row.Cells[0].String() == "" {
+					continue
+				}
+				var nt NP_Target
+				nt.Tcmid = row.Cells[0].String()
+				nt.Inchikey = row.Cells[1].String()
+				nt.GeneName = row.Cells[7].String()
+				nts = append(nts, nt)
+				check := 0
+				for _, s := range ts {
+					if s.GeneName == nt.GeneName {
+						check = 1
+						break
+					}
+				}
+				if check == 0 {
+					var t UTarget
+					t.GeneName = nt.GeneName
+					ts = append(ts, t)
+				}
+			}
+		}
+	}
+
+	xlFile, err = xlsx.OpenFile("E:/GIM/TCM/TCMIO/processed_2_bSDTNBI_KR_0.1_0.1_-0.5/TCM_TARGET_part2.xlsx")
+	if err != nil {
+		fmt.Println("err in open file")
+	}
+	for j, sheet := range xlFile.Sheets {
+		if j == 0 {
+			for i, row := range sheet.Rows {
+				if i < 1 {
+					continue
+				}
+				if row.Cells[0].String() == "" {
+					continue
+				}
+				var nt NP_Target
+				nt.Tcmid = row.Cells[0].String()
+				nt.Inchikey = row.Cells[1].String()
+				nt.GeneName = row.Cells[7].String()
+				nts = append(nts, nt)
+				check := 0
+				for _, s := range ts {
+					if s.GeneName == nt.GeneName {
+						check = 1
+						break
+					}
+				}
+				if check == 0 {
+					var t UTarget
+					t.GeneName = nt.GeneName
+					ts = append(ts, t)
+				}
+			}
+		}
+	}
+	fmt.Printf("np-target relations:%d\n", len(nts))
+	fmt.Printf("unique target:%d\n", len(ts))
+
+	var tars []models.Target
+	o := orm.NewOrm()
+	_, err = o.Raw("select * from target").QueryRows(&tars)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(len(tars))
+	cnt := 0
+	for _, s := range tars {
+		for _, t := range ts {
+			if s.GeneName == t.GeneName {
+				fmt.Printf("%s\t%s\n", s.GeneName, t.GeneName)
+				cnt++
+				break
+			}
+		}
+	}
+	fmt.Println(cnt)
+	cnt = 0
+	var snts []NP_Target
+	fi, err := os.Create("ingredient-target.txt")
+	if err != nil {
+		panic(err)
+	}
+	defer fi.Close()
+	fmt.Fprintf(fi, "ingredient_id\ttarget_id\ttype\n")
+	for _, s := range nts {
+		var ing models.Ingredient
+		err = ing.Query().Filter("inchikey", s.Inchikey).One(&ing)
+		if err != nil {
+			//fmt.Println(err)
+			continue
+		}
+		var t models.Target
+		err = t.Query().Filter("gene_name", s.GeneName).One(&t)
+		if err != nil {
+			//fmt.Println(err)
+			continue
+		}
+		fmt.Println(s)
+		fmt.Fprintf(fi, "%d\t%d\t%s\n", ing.Id, t.Id, "Network-based prediction")
+		snts = append(snts, s)
+		cnt++
+	}
+	fmt.Println(cnt)
+	fmt.Println(len(snts))
+
+}
+
+func AnalyzeNetworkBasedNPTargetPrediction() {
+	fmt.Println("Start")
+	GetNPTarget()
+	//GetIngredientTargetRelation()
+}
+
+func GetIngredientTargetRelation() {
+
+	var ing models.Ingredient
+	var ings []models.Ingredient
+
+	_, err := ing.Query().All(&ings)
+	if err != nil {
+		panic(err)
+	}
+	cnt := 0
+	for _, s := range ings {
+		var lig models.Ligand
+		err = lig.Query().Filter("inchikey", s.Inchikey).One(&lig)
+		if err != nil {
+			continue
+		}
+
+		var lt models.Target_ligand
+		var lts []models.Target_ligand
+
+		_, err = lt.Query().Filter("mol_chembl_id", lig.ChemblId).All(&lts)
+		if err != nil {
+			continue
+		}
+
+		for _, t := range lts {
+			//var it models.Ingredient_Target
+			//it.IngredientId = s.Id
+			//it.TargetId = t.Id
+			//it.Insert()
+			fmt.Println(t)
+			cnt++
+		}
+	}
+	fmt.Println(cnt)
 
 }

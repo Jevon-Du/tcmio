@@ -111,3 +111,12 @@ func PathExists(path string) (bool, error) {
 	}
 	return false, err
 }
+
+func WriteFile(str, path string) {
+	f, err := os.Create(path)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Fprintln(f, str)
+	f.Close()
+}
