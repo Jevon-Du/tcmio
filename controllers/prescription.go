@@ -113,7 +113,7 @@ func (this *MainController) AnalyzePrescription() {
 			n.Group = "tcms"
 			n.Label = t.PinyinName
 			nodes = append(nodes, n)
-			e.From = p.Id + 400000
+			e.From = p.Id + 10000
 			e.To = n.Id
 			edges = append(edges, e)
 		}
