@@ -41,3 +41,14 @@ func (this *MainController) Structure() {
 func (this *MainController) MOA() {
 	this.TplName = "moa.html"
 }
+
+type Node struct {
+	Id    int64  `json:"id"`
+	Label string `json:"label"`
+	Group string `json:"group"`
+}
+
+type Edge struct {
+	From int64 `json:"from"`
+	To   int64 `json:"to"`
+}

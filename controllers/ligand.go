@@ -8,6 +8,7 @@ import (
 )
 
 func (this *MainController) ListLigands() {
+	fmt.Println("List ligands")
 	var tars []models.Ligand
 	var tar models.Ligand
 	draw, _ := this.GetInt64("draw")
@@ -15,11 +16,11 @@ func (this *MainController) ListLigands() {
 	limit, _ := this.GetInt64("length")
 	fmt.Println(offset)
 	fmt.Println(limit)
-	_, err := tar.Query().Limit(limit, offset).All(&tars)
+	_, err := tar.Query().Limit(limit, offset).OrderBy("id").All(&tars)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(tars)
+	//fmt.Println(tars)
 
 	total, _ := tar.Query().Count()
 
@@ -36,6 +37,7 @@ func (this *MainController) ListLigands() {
 }
 
 func (this *MainController) DetailLigand() {
+	fmt.Println("DetailLigand")
 	var tar models.Ligand
 	id := this.Ctx.Input.Param(":id")
 	fmt.Println(id)
@@ -51,17 +53,17 @@ func (this *MainController) DetailLigand() {
 	this.responseMsg.SuccessMsg("", tar)
 	this.Data["json"] = this.responseMsg
 	this.ServeJSON()
-
 }
 
 // structure search ligands
-func (this *MainController) SearchLigands() {
-	method := this.Ctx.Input.Param(":method")
+func (this *MainController) StructureSearchLigand() {
+	fmt.Println("StructureSearchLigand")
+
+	draw, _ := this.GetInt64("draw")
+	method := this.GetString("method")
 	fmt.Println(method)
-	//limit, _ := this.GetInt64("limit")
-	//offset, _ := this.GetInt64("offset")
-	limit := this.GetString("limit")
-	offset := this.GetString("offset")
+	limit := this.GetString("length")
+	offset := this.GetString("start")
 	if limit == "" {
 		limit = "10"
 	}
@@ -70,12 +72,12 @@ func (this *MainController) SearchLigands() {
 	}
 	query := this.GetString("query")
 	url := ""
-	if method == "sim" {
+	if method == "Similarity" {
 		threshold := this.GetString("threshold")
-		url = "select * from ligand where mol @ (" + threshold + ", 1.0, '" + query + "', 'Tanimoto')::bingo.sim;"
-	} else if method == "sub" {
+		url = "select * from ligand where mol @ (" + threshold + ", 1.0, '" + query + "', 'Tanimoto')::bingo.sim" + " limit " + limit + " offset " + offset + ";"
+	} else if method == "Substructure" {
 		url = "select *  from ligand where mol @ ('" + query + "','')::bingo.sub" + " limit " + limit + " offset " + offset + ";"
-	} else if method == "exact" {
+	} else if method == "Fullstructure" {
 		url = "select *  from ligand where mol @ ('" + query + "','')::bingo.exact" + " limit " + limit + " offset " + offset + ";"
 	} else {
 		this.responseMsg.ErrorMsg("method not support", "")
@@ -86,9 +88,6 @@ func (this *MainController) SearchLigands() {
 	fmt.Println(url)
 	o := orm.NewOrm()
 	var hits []models.Ligand
-	//_, err := o.Raw("select * from ligand where mol @ (0.5, 1.0, 'Fc1ccccc1Cn2ccc(NC(=O)c3ccc(COc4ccccc4Cl)cc3)n2', 'Tanimoto')::bingo.sim limit 10 offset 0;").QueryRows(&hits)
-
-	//_, err := o.Raw("select * from ligand where mol @ (0.5, 1.0, 'C1=CC=CC=C1', 'Tanimoto')::bingo.sim limit 10 offset 0;").QueryRows(&hits)
 	_, err := o.Raw(url).QueryRows(&hits)
 	if err != nil {
 		fmt.Println(err)
@@ -96,28 +95,32 @@ func (this *MainController) SearchLigands() {
 		this.Data["json"] = this.responseMsg
 		this.ServeJSON()
 	}
-	fmt.Println(hits)
+	//fmt.Println(hits)
 
-	this.responseMsg.SuccessMsg("", hits)
-	this.Data["json"] = this.responseMsg
+	var data DataList
+	data.Draw = draw
+	data.RecordsTotal = 100
+	data.RecordsFiltered = 100
+	data.Data = hits
+
+	this.Data["json"] = data
 	this.ServeJSON()
 }
 
-func (this *MainController) StructureSearchLigand() {
-
-	resultsInfo := make(map[string]interface{})
-
-	method := this.Ctx.Input.Param(":method")
+func (this *MainController) AnalyzeStructureSearchLigand() {
+	fmt.Println("AnalyzeStructureSearchLigand")
+	//resultsInfo := make(map[string]interface{})
+	draw, _ := this.GetInt64("draw")
+	method := this.GetString("method")
 	fmt.Println(method)
-
 	query := this.GetString("query")
 	url := ""
-	if method == "sim" {
+	if method == "Similarity" {
 		threshold := this.GetString("threshold")
 		url = "select * from ligand where mol @ (" + threshold + ", 1.0, '" + query + "', 'Tanimoto')::bingo.sim;"
-	} else if method == "sub" {
+	} else if method == "Substructure" {
 		url = "select *  from ligand where mol @ ('" + query + "','')::bingo.sub;"
-	} else if method == "exact" {
+	} else if method == "Fullstructure" {
 		url = "select *  from ligand where mol @ ('" + query + "','')::bingo.exact;"
 	} else {
 		this.responseMsg.ErrorMsg("method not support", "")
@@ -138,8 +141,6 @@ func (this *MainController) StructureSearchLigand() {
 		this.Data["json"] = this.responseMsg
 		this.ServeJSON()
 	}
-	fmt.Println(hits)
-	resultsInfo["ligand"] = hits
 
 	// get activity from ligands
 
@@ -148,19 +149,22 @@ func (this *MainController) StructureSearchLigand() {
 	for _, s := range hits {
 		var tl models.Target_ligand
 		var tls []models.Target_ligand
-		_, err = tl.Query().Filter("mol_chembl_id", s.ChemblId).RelatedSel().All(&tls)
+		//_, err = tl.Query().Filter("mol_chembl_id", s.ChemblId).RelatedSel().All(&tls)
+		_, err = tl.Query().Filter("mol_chembl_id", s.ChemblId).All(&tls)
 		if err != nil {
 			fmt.Println(err)
+			continue
 		}
-		fmt.Println(tls)
+		//fmt.Println(tls)
 		for _, t := range tls {
 			tlss = append(tlss, t)
 		}
 	}
-	resultsInfo["activity"] = tlss
+	//resultsInfo["activity"] = tlss
 
 	// get ingredients from ligands
-	var ingres []models.Ingredient
+	// cancer
+	/*var ingres []models.Ingredient
 	for _, s := range hits {
 		fmt.Println(s.ChemblId)
 		var ingre models.Ingredient
@@ -171,9 +175,17 @@ func (this *MainController) StructureSearchLigand() {
 		ingres = append(ingres, ingre)
 	}
 	resultsInfo["ingredient"] = ingres
-
+	*/
 	// convert to json
-	this.responseMsg.SuccessMsg("", resultsInfo)
-	this.Data["json"] = this.responseMsg
+	//this.responseMsg.SuccessMsg("", resultsInfo)
+
+	var data DataList
+
+	data.Draw = draw
+	data.RecordsTotal = int64(len(hits))
+	data.RecordsFiltered = int64(len(hits))
+	data.Data = tlss
+
+	this.Data["json"] = data
 	this.ServeJSON()
 }

@@ -1,12 +1,12 @@
 package controllers
 
 import (
+	"encoding/json"
 	"fmt"
 	"strconv"
 	"strings"
 	"tcmio/models"
-
-	"github.com/astaxie/beego/orm"
+	"tcmio/util"
 )
 
 func (this *MainController) ListPrescriptions() {
@@ -56,25 +56,15 @@ func (this *MainController) DetailPrescription() {
 
 }
 
-type Node struct {
-	Id    int64  `json:"id"`
-	Label string `json:"label"`
-	Group int64  `json:"group"`
-}
-
-type Edge struct {
-	From int64 `json:"from"`
-	To   int64 `json:"to"`
-}
-
 func (this *MainController) AnalyzePrescription() {
 	fmt.Println("Prescription analysis")
-	presName := strings.TrimSpace(this.GetString("pres_name"))
+	nameType := strings.TrimSpace(this.GetString("type"))
+	presName := strings.TrimSpace(this.GetString("kw"))
 	fmt.Println(presName)
 
 	var p models.Prescription
 	var pres []models.Prescription
-	err := p.Query().Filter("chinese_name", presName).One(&p)
+	err := p.Query().Filter(nameType, presName).One(&p)
 	if err != nil {
 		panic(err)
 	}
@@ -86,7 +76,7 @@ func (this *MainController) AnalyzePrescription() {
 	var n Node
 	var e Edge
 	n.Id = p.Id + 400000
-	n.Group = 0
+	n.Group = "prescriptions"
 	n.Label = p.ChineseName
 
 	nodes = append(nodes, n)
@@ -111,7 +101,7 @@ func (this *MainController) AnalyzePrescription() {
 			tcms = append(tcms, t)
 
 			n.Id = t.Id + 100000
-			n.Group = 1
+			n.Group = "tcms"
 			n.Label = t.PinyinName
 			nodes = append(nodes, n)
 			e.From = p.Id + 400000
@@ -126,7 +116,7 @@ func (this *MainController) AnalyzePrescription() {
 
 		var ti models.TCM_Ingredient
 		var tis []models.TCM_Ingredient
-		_, err = ti.Query().Filter("tcm_id", h.Id).All(&tis)
+		_, err := ti.Query().Filter("tcm_id", h.Id).All(&tis)
 		if err != nil {
 			panic(err)
 		}
@@ -139,8 +129,8 @@ func (this *MainController) AnalyzePrescription() {
 		}
 
 		for _, m1 := range mols {
-			e.From = h.Id + 100000
-			e.To = m1.Id
+			e.From = h.Id + 1000
+			e.To = m1.Id + 100000
 			edges = append(edges, e)
 			check := 0
 			for _, m2 := range ingres {
@@ -151,84 +141,86 @@ func (this *MainController) AnalyzePrescription() {
 			}
 			if check == 0 {
 				ingres = append(ingres, m1)
+				n.Id = m1.Id + 100000
+				n.Label = strconv.Itoa(int(m1.Id))
+				n.Group = "ingredients"
+				nodes = append(nodes, n)
 			}
 		}
 	}
 
-	for _, m := range ingres {
-		n.Id = int64(m.Id)
-		str := strconv.Itoa(int(m.Id))
-		n.Label = str
-		n.Group = 2
-		nodes = append(nodes, n)
-	}
+	fmt.Printf("Ingredients:%d\n", len(ingres))
+	fmt.Printf("Nodes:%d\n", len(nodes))
+	fmt.Printf("Edges:%d\n", len(edges))
 
-	//get ligands from ingredients
-	var ligs []models.Ligand
-	for _, m := range ingres {
-
-		url := "select * from ligand where mol @ (" + "0.8" + ", 1.0, '" + m.Mol + "', 'Tanimoto')::bingo.sim;"
-		var mols []models.Ligand
-		o := orm.NewOrm()
-		_, err := o.Raw(url).QueryRows(&mols)
-		if err != nil {
-			//fmt.Println(ing.Smiles)
-			panic(err)
+	/*
+		for _, m := range ingres {
+			n.Id = int64(m.Id + 100000)
+			str := strconv.Itoa(int(m.Id))
+			n.Label = str
+			n.Group = 3
+			nodes = append(nodes, n)
 		}
-		//fmt.Printf("%s\t%d\n", ing.Smiles, len(mols))
+	*/
 
-		for _, mm := range mols {
-			check := 0
-			for _, nn := range ligs {
-				if nn.Id == mm.Id {
-					check = 1
-					break
-				}
-			}
-			if check == 0 {
-				ligs = append(ligs, mm)
-			}
-		}
-	}
-
-	// get target for ligand
+	// get target for ingredient
 	var tars []models.Target
-	for _, n := range ligs {
-		var tl models.Target_ligand
-		var tls []models.Target_ligand
-		_, err = tl.Query().Filter("mol_chembl_id", n.ChemblId).All(&tls)
+	for _, i := range ingres {
+
+		var it models.Ingredient_Target
+		var its []models.Ingredient_Target
+		_, err := it.Query().Filter("ingredient_id", i.Id).All(&its)
 		if err != nil {
-			panic(err)
+			//panic(err)
+			fmt.Println(err)
+			continue
 		}
-		for _, x := range tls {
+		fmt.Println(len(its))
+		for _, x := range its {
 			var tr models.Target
-			err = tr.Query().Filter("chembl_id", x.TargetChemblId).One(&tr)
-			//fmt.Printf("%s\t%s\t%s\t%s\n", s.ChineseName, t.ChineseName, ing.Smiles, tr.GeneName)
+			err = tr.Query().Filter("id", x.TargetId).One(&tr)
+			if err != nil {
+				continue
+			}
+			e.From = i.Id + 100000
+			e.To = tr.Id
+			edges = append(edges, e)
 
 			check := 0
 			for _, y := range tars {
-				if y.Id == x.Id {
+				if y.Id == tr.Id {
 					check = 1
 					break
 				}
 			}
 			if check == 0 {
 				tars = append(tars, tr)
+				n.Id = tr.Id
+				n.Label = tr.GeneName
+				n.Group = "targets"
+				nodes = append(nodes, n)
 			}
 		}
 	}
+
+	fmt.Printf("Targets:%d\n", len(tars))
+	fmt.Printf("Nodes:%d\n", len(nodes))
+	fmt.Printf("Edges:%d\n", len(edges))
 	//enrich := util.DavaidAnalysis(tars, j)
 
 	resultsInfo := make(map[string]interface{})
 
-	resultsInfo["pres"] = pres
-	resultsInfo["tcms"] = tcms
-	resultsInfo["ingres"] = ingres
-	resultsInfo["ligs"] = ligs
-	resultsInfo["tars"] = tars
+	//resultsInfo["pres"] = pres
+	//resultsInfo["tcms"] = tcms
+	//resultsInfo["ingres"] = ingres
+	//resultsInfo["ligs"] = ligs
+	//resultsInfo["tars"] = tars
 	resultsInfo["nodes"] = nodes
 	resultsInfo["edges"] = edges
 	//resultsInfo["pathways"] = enrich
+
+	res, _ := json.Marshal(resultsInfo)
+	util.WriteFile(string(res), "prescription.json")
 
 	this.responseMsg.SuccessMsg("", resultsInfo)
 	this.Data["json"] = this.responseMsg

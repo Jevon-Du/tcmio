@@ -33,6 +33,8 @@ func (this *MainController) ListTargets() {
 	limit, _ := this.GetInt64("length")
 	fmt.Println(offset)
 	fmt.Println(limit)
+	fmt.Println(this.GetString("order"))
+	fmt.Println(this.Ctx.Input)
 
 	/*var maps []orm.Params
 	o := orm.NewOrm()
@@ -46,7 +48,7 @@ func (this *MainController) ListTargets() {
 	*/
 	var tar models.Target
 	var tars []models.Target
-	_, err := tar.Query().Limit(limit, offset).All(&tars)
+	_, err := tar.Query().Limit(limit, offset).OrderBy("id").All(&tars)
 	if err != nil {
 		fmt.Println(err)
 	}
