@@ -113,10 +113,10 @@ function init_chemdoodle(data_type){
         }
     }, 100);
 
-    var interval2 = setInterval(function() {
-        $('.dataTables_length select').addClass('form-control select select-primary');
+    var interval2 = setInterval(function() { //
+        $('.dataTables_length select').addClass('form-control select select-inverse');
         $('.dataTables_length select').select2({
-            // dropdownCssClass: 'dropdown-inverse',
+            dropdownCssClass: 'dropdown-inverse',
             width: '70px',
             allowClear: false
         });

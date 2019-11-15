@@ -217,31 +217,31 @@ function initialize_table_in_structure(data_type, request){
      * @return {table} DataTable对象
      */
 
-    // data_type: ligands_analyze, or ingredients_analyze
+    // data_type: ligands, or ingredients
     var $table = $('#' + data_type +'_analyze');
 
-    var table = $table.DataTable({
-        sserverSide: true,
-        autoWidth: true,
-        ajax: {
-            url: '/structure/analyze/'+data_type,
-            type: 'get',
-            data: function ( d ) {
-                return $.extend( {}, d, request);
-            },
-            dataSrc: function (msg) {
-                return analyze_data_format(msg, data_type);
-            }
-        },
-        deferRender: true,
-        // data: data_arrays,
-        columns: COL_TYPE[data_type],
-        dom: '<r<t>ip>',
-        ordering: true,
-        pagingType:   "full_numbers",
-        pageLength: 6, //每页显示的初始记录数量
-        lengthChange: false, //允许修改每页的记录数量
-    });
+    // var table = $table.DataTable({
+    //     sserverSide: true,
+    //     autoWidth: true,
+    //     ajax: {
+    //         url: '/structure/analyze/'+data_type,
+    //         type: 'get',
+    //         data: function ( d ) {
+    //             return $.extend( {}, d, request);
+    //         },
+    //         dataSrc: function (msg) {
+    //             return analyze_data_format(msg, data_type);
+    //         }
+    //     },
+    //     deferRender: true,
+    //     // data: data_arrays,
+    //     columns: COL_TYPE[data_type +'_analyze'],
+    //     dom: '<r<t>ip>',
+    //     ordering: true,
+    //     pagingType:   "full_numbers",
+    //     pageLength: 6, //每页显示的初始记录数量
+    //     lengthChange: false, //允许修改每页的记录数量
+    // });
 
     // 采用本地json数据测试通过
 
@@ -263,16 +263,9 @@ function initialize_table_in_structure(data_type, request){
     //     pagingType:   "full_numbers",
     //     pageLength: 6, //每页显示的初始记录数量
     //     lengthChange: false, //允许修改每页的记录数量
-    //     language: {
-    //         "lengthMenu": "每页 _MENU_ 条记录",
-    //         "zeroRecords": "没有找到记录",
-    //         "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
-    //         "infoEmpty": "无记录",
-    //         "infoFiltered": "(从 _MAX_ 条记录过滤)"
-    //     }
     // });
 
-    return table;
+    // return table;
 }
 
 function initialize_table_in_pathway($table, data_arrays){

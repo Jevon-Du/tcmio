@@ -87,15 +87,8 @@ structure/ingredient                    |   get     |   query=Molecule%20from%20
 2. 各节点信息同browse页面的信息
 3. pathway?
 
+psql -h 127.0.0.1 -p 5432 -U postgres -d tcmio -f  /home/djw/bingo-postgres10.1-1.8.0beta.r1-linux64/bingo_install.sql
 
-TODO:
 
-[] 每个节点制作不同的logo
-[] Download Figure
-[] pathway的数据请求,如何触发
-
-[] 专利写作
-[] TCMIO功能修复
-[] 人月神话阅读完一章
-[] 工作进展发邮件
-
+psql -h 127.0.0.1 -p 5432 -U postgres -d tcmio
+create index cindex1 on ingredient using bingo_idx (mol bingo.molecule);

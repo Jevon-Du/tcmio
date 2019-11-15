@@ -59,9 +59,11 @@ function structure_search(){
 
             var request = {
                 "query": query,
-                "method": method,
+                "method": method_map[method],
                 "threshold": threshold
             }
+
+            console.log(request);
 
             var data_type = type+'s';
 
@@ -218,6 +220,7 @@ function moa_search(){
                     }
                 }
             }).done(function (msg) {
+                var msg = JSON.parse(msg);
                 console.log(msg);
                 draw(msg.Data['nodes'], msg.Data['edges']);
 

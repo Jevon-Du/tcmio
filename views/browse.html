@@ -51,13 +51,11 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Browse <b class="caret"></b></a>
                         <span class="dropdown-arrow"></span>
                         <ul class="dropdown-menu">
+                            <li class="prescriptions"><a href="/browse/prescriptions">Prescription</a></li>
+                            <li class="tcms"><a href="/browse/tcms">TCM</a></li>
+                            <li class="ingredients"><a href="/browse/ingredients">Ingredient</a></li>
                             <li class="targets"><a href="/browse/targets">Target</a></li>
                             <li class="ligands"><a href="/browse/ligands">Ligand</a></li>
-                            <!-- <li role="separator" class="divider"></li>
-                            <li class="dropdown-header">xxx header</li> -->
-                            <li class="ingredients"><a href="/browse/ingredients">Ingredient</a></li>
-                            <li class="tcms"><a href="/browse/tcms">TCM</a></li>
-                            <li class="prescriptions"><a href="/browse/prescriptions">Prescription</a></li>
                         </ul>
                     </li>
                     <li><a href="/structure">Structure</a></li>
@@ -76,72 +74,21 @@
         </ol>
 
         <div class="btn-group colsVisibility pull-right">
-            <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">Toggle column<span class="caret"></span></button>
-            <ul role="menu" class="dropdown-menu">
-                
-              <!-- <li><a href="#">Action</a></li>
-              <li class="active"><a href="#" >Another action</a></li>
-              <li class="active"><a href="#" >Another action</a></li>
-              <li><a href="#">Something else here</a></li>
-              <li><a href="#">Separated link</a></li> -->
+            <button data-toggle="dropdown" class="btn btn-inverse dropdown-toggle" type="button">Toggle column<span class="caret"></span></button>
+            <ul role="menu" class="dropdown-menu dropdown-menu-inverse">
             </ul>
         </div>
-        
-        <table id="targets" class="uk-table uk-table-hover uk-table-striped" cellspacing="0" width="100%">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>GeneName</th>
-                    <th>Function</th>
-                    <th>ProteinFamily</th>
-                    <th>UniprotId</th>
-                    <th>ChemblId</th>
-                    <th>EcNumber</th>
-                    <!-- <th>Kegg</th>
-                    <th>Pdb</th>
-                    <th>Mass</th>
-                    <th>Length</th> -->
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
 
-        <table id="ligands" class="uk-table uk-table-hover uk-table-striped" cellspacing="0" width="100%">
+        <table id="prescriptions" class="uk-table uk-table-hover uk-table-striped" cellspacing="0" width="100%">
             <thead>
                 <tr>
-                    <th>Id</th>
-                    <th>Mol</th>
-                    <th>Name</th>
-                    <th>IngredientId</th>
-                    <th>ChemblId</th>
-                    <!-- <th>Smiles</th> -->
-                    <!-- <th>Inchi</th>
-                    <th>Inchikey</th> -->
-                    <th>Formula</th>
-                    <th>MolWeight</th>
-                    <th>Hba</th>
-                    <th>Hbd</th>
-                    <th>Rtb</th>
-                    <th>Alogp</th>   
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-
-        <table id="ingredients" class="uk-table uk-table-hover uk-table-striped" cellspacing="0" width="100%">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Mol</th>
-                    <th>Name</th>
-                    <!-- <th>Synonyms</th> -->
-                    <th>Smiles</th>
-                    <!-- <th>Inchi</th>
-                    <th>Inchikey</th> -->
-                    <th>LigandId</th>
+                    <th>ID</th>
+                    <th>ChineseName</th>
+                    <th>PinyinName</th>
+                    <th>Ingredients</th>
+                    <th>Indication</th>
+                    <th>Effect</th>
+                    <th>RefSource</th>
                 </tr>
             </thead>
             <tbody>
@@ -151,7 +98,7 @@
         <table id="tcms" class="uk-table uk-table-hover uk-table-striped" cellspacing="0" width="100%">
             <thead>
                 <tr>
-                    <th>Id</th>
+                    <th>ID</th>
                     <th>ChineseName</th>
                     <th>PinyinName</th>
                     <th>EnglishName</th>
@@ -167,16 +114,61 @@
             </tbody>
         </table>
 
-        <table id="prescriptions" class="uk-table uk-table-hover uk-table-striped" cellspacing="0" width="100%">
+        <table id="ingredients" class="uk-table uk-table-hover uk-table-striped" cellspacing="0" width="100%">
             <thead>
                 <tr>
-                    <th>Id</th>
-                    <th>ChineseName</th>
-                    <th>PinyinName</th>
-                    <th>Ingredients</th>
-                    <th>Indication</th>
-                    <th>Effect</th>
-                    <th>RefSource</th>
+                    <th>ID</th>
+                    <th>Mol</th>
+                    <th>Name</th>
+                    <!-- <th>Synonyms</th> -->
+                    <th>Smiles</th>
+                    <!-- <th>Inchi</th>
+                    <th>Inchikey</th> -->
+                    <th>LigandID</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <table id="targets" class="uk-table uk-table-hover uk-table-striped" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>GeneName</th>
+                    <th>Function</th>
+                    <th>ProteinFamily</th>
+                    <th>Uniprot</th>
+                    <th>ChEMBL</th>
+                    <th>ECNumber</th>
+                    <!-- <th>Kegg</th>
+                    <th>Pdb</th>
+                    <th>Mass</th>
+                    <th>Length</th> -->
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <table id="ligands" class="uk-table uk-table-hover uk-table-striped" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Mol</th>
+                    <th>Name</th>
+                    <th>IngredientID</th>
+                    <th>Chembl</th>
+                    <!-- <th>Smiles</th> -->
+                    <!-- <th>Inchi</th>
+                    <th>Inchikey</th> -->
+                    <th>Formula</th>
+                    <th>MolWeight</th>
+                    <th>Hba</th>
+                    <th>Hbd</th>
+                    <th>Rtb</th>
+                    <th>Alogp</th>   
                 </tr>
             </thead>
             <tbody>
